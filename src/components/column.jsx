@@ -1,6 +1,10 @@
 import JobCard from "./jobCard";
 
-const Coloumn = ({ title }) => {
+const Column = ({ column, jobs }) => {
+  const filteredJobs = jobs.filter(
+    (job) => job.status === column.id
+  );
+    
   return (
     <>
       <div
@@ -11,12 +15,13 @@ const Coloumn = ({ title }) => {
           borderRadius: "10px",
         }}
       >
-        <h3>{title}</h3>
-        <JobCard />
-        <JobCard />
+        <h3>{column.title}</h3>
+        {filteredJobs.map((job) => (
+          <JobCard key={job.id} job={job} />
+        ))}
       </div>
     </>
   );
 };
 
-export default Coloumn;
+export default Column;

@@ -1,7 +1,9 @@
+import useJobs from "./hooks/useJobs";
 import Board from "./components/board";
 
 function App() {
-  return <Board />;
+  const { jobs } = useJobs();
+  return <Board jobs={jobs} />;
 }
 
 export default App;

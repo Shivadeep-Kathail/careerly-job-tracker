@@ -1,4 +1,4 @@
-const JobCard = () => {
+const JobCard = ({job}) => {
   return (
     <>
       <div
@@ -10,11 +10,11 @@ const JobCard = () => {
           boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
         }}
       >
-        <h4>Frontend Intern</h4>
-        <p>Google</p>
-        <small>Banglore, India</small>
+        <h4>{job.role}</h4>
+        <p>{job.company}</p>
+        <small>{job.location}</small>
         <br />
-        <small>Applied: Jan 2, 2026</small>
+        <small>Applied: {job.appliedDate}</small>
       </div>
     </>
   );
