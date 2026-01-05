@@ -5,8 +5,8 @@ function useJobs() {
     const [jobs, setJobs]= useState(initialJobs);
 
     //CREATE
-    const addJob=(job) =>{ 
-        setJobs((prev)=>[...prev,job])
+    const addJob=(newjob) =>{ 
+        setJobs((prev)=>[...prev,newjob])
     }
 
     //UPDATE
