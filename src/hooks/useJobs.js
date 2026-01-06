@@ -10,9 +10,15 @@ function useJobs() {
     }
 
     //UPDATE
-    const updateJob=(id, updatedJobData ) =>{
-        setJobs((prev) => prev.map((job)=> job.id===id? {...job, ...updatedJobData}:job))
-    }
+    const updateJob = (updatedJob) => {
+        console.log("updateJob called with:", updatedJob);
+  setJobs((prevJobs) =>
+    prevJobs.map((job) =>
+      job.id === updatedJob.id ? updatedJob : job
+    )
+  );
+};
+
 
     //DELETE
     const deleteJob=(id) => {

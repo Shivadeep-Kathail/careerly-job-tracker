@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./modal";
 
-const JobModal = ({ isOpen, onClose, addJob }) => {
+const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
   const [role, setRole] = useState("");
   const [company, setCompany] = useState("");
   const [location, setLocation] = useState("");
@@ -13,39 +13,66 @@ const JobModal = ({ isOpen, onClose, addJob }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newJob = {
-      id: crypto.randomUUID(),
-      role,
-      company,
-      location,
-      link,
-      appliedDate: date,
-      status,
-      notes,
-    };
+    if (jobToEdit) {
+      updateJob({
+        ...jobToEdit,
+        role,
+        company,
+        location,
+        link,
+        appliedDate: date,
+        status,
+        notes,
+      });
+    } else {
+      addJob({
+        id: crypto.randomUUID(),
+        role,
+        company,
+        location,
+        link,
+        appliedDate: date,
+        status,
+        notes,
+      });
+    }
 
-    addJob(newJob);
-
-    // close modal
     onClose();
+  };
 
-    // reset form
+  useEffect(() => {
+  if (!isOpen) return;
+
+  if (jobToEdit) {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRole(jobToEdit.role);
+    setCompany(jobToEdit.company);
+    setLocation(jobToEdit.location);
+    setLink(jobToEdit.link || "");
+    setDate(jobToEdit.appliedDate);
+    setStatus(jobToEdit.status);
+    setNotes(jobToEdit.notes || "");
+  } else {
     setRole("");
     setCompany("");
     setLocation("");
     setLink("");
-    setNotes("");
-    setStatus("wishlist");
     setDate(new Date().toISOString().split("T")[0]);
-  };
+    setStatus("wishlist");
+    setNotes("");
+  }
+}, [jobToEdit, isOpen]);
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h3>Add Job Application</h3>
+      <h3>{jobToEdit ? "Edit Job Application" : "Add Job Application"}</h3>
       <form onSubmit={handleSubmit}>
         <div>
           <div>
-            <label>Job Title <small>*</small></label>
+            <label>
+              Job Title <small>*</small>
+            </label>
           </div>
           <div>
             <input
@@ -60,7 +87,9 @@ const JobModal = ({ isOpen, onClose, addJob }) => {
 
         <div>
           <div>
-            <label>Company Name <small>*</small></label>
+            <label>
+              Company Name <small>*</small>
+            </label>
           </div>
           <div>
             <input
@@ -75,7 +104,9 @@ const JobModal = ({ isOpen, onClose, addJob }) => {
 
         <div>
           <div>
-            <label>Location <small>*</small></label>
+            <label>
+              Location <small>*</small>
+            </label>
           </div>
           <div>
             <input
@@ -138,7 +169,8 @@ const JobModal = ({ isOpen, onClose, addJob }) => {
           <button type="button" onClick={onClose}>
             Cancel
           </button>
-          <button type="submit">Add Job</button>
+          <button type="submit"> {jobToEdit ? "Save Changes" : "Add Job"} </button>
+
         </div>
       </form>
     </Modal>

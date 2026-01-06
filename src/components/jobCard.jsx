@@ -1,4 +1,4 @@
-const JobCard = ({job}) => {
+const JobCard = ({job, onEdit}) => {
   return (
     <>
       <div
@@ -15,6 +15,7 @@ const JobCard = ({job}) => {
         <small>{job.location}</small>
         <br />
         <small>Applied: {job.appliedDate}</small>
+        <button onClick={onEdit}>Edit</button>
       </div>
     </>
   );
