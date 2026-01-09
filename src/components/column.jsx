@@ -1,6 +1,6 @@
 import JobCard from "./jobCard";
 
-const Column = ({ column, jobs, onEditJob }) => {
+const Column = ({ column, jobs, onEditJob, onDelete }) => {
   const filteredJobs = jobs.filter(
     (job) => job.status === column.id
   );
@@ -17,7 +17,7 @@ const Column = ({ column, jobs, onEditJob }) => {
       >
         <h3>{column.title}</h3>
         {filteredJobs.map((job) => (
-          <JobCard key={job.id} job={job} onEdit={() => onEditJob(job)} />
+          <JobCard key={job.id} job={job} onEdit={() => onEditJob(job)} onDelete={onDelete} />
         ))}
       </div>
     </>

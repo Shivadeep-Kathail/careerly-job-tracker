@@ -3,7 +3,7 @@ import JobModal from "./jobModal";
 import { COLUMNS } from "../data/columns";
 import { useState } from "react";
 
-const Board = ({ jobs, addJob, updateJob }) => {
+const Board = ({ jobs, addJob, updateJob, deleteJob }) => {
   const [jobToEdit, setJobToEdit] = useState(null);
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
 
@@ -28,6 +28,7 @@ const Board = ({ jobs, addJob, updateJob }) => {
             column={column}
             jobs={jobs}
             onEditJob={handleEditJob}
+            onDelete={deleteJob}
           />
         ))}
       </div>

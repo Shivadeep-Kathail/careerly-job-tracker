@@ -1,4 +1,10 @@
-const JobCard = ({job, onEdit}) => {
+const JobCard = ({job, onEdit, onDelete}) => {
+  const handleDelete=() => {
+    const confirmDelete= window.confirm(`Are you sure you want to delete "${job.role}" at "${job.company}"?`)
+    if(!confirmDelete) return;
+
+    onDelete(job.id);
+  }
   return (
     <>
       <div
@@ -15,7 +21,8 @@ const JobCard = ({job, onEdit}) => {
         <small>{job.location}</small>
         <br />
         <small>Applied: {job.appliedDate}</small>
-        <button onClick={onEdit}>Edit</button>
+        <button type="button" onClick={onEdit}>Edit</button>
+        <button type="button" onClick={handleDelete}>🗑 Delete</button>
       </div>
     </>
   );
