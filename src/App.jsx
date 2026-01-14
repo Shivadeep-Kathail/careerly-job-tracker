@@ -9,8 +9,8 @@ function App() {
 
   const stats = {
   total: jobs.length,
+  interview: jobs.filter(j => j.status === "interview").length,
   offer: jobs.filter(j => j.status === "offer").length,
-  rejected: jobs.filter(j => j.status === "rejected").length,
 };
 
 
