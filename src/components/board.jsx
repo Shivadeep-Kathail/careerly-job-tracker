@@ -3,23 +3,21 @@ import JobModal from "./jobModal";
 import { COLUMNS } from "../data/columns";
 import { useState } from "react";
 
-const Board = ({ jobs, addJob, updateJob, deleteJob }) => {
+const Board = ({ jobs, addJob, updateJob,isJobModalOpen, deleteJob, closeModal, openModal }) => {
   const [jobToEdit, setJobToEdit] = useState(null);
-  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
 
   const handleEditJob = (job) => {
     setJobToEdit(job);
-    setIsJobModalOpen(true);
+    openModal()
   };
 
   const handleCloseModal = () => {
-    setIsJobModalOpen(false);
+    closeModal();
     setJobToEdit(null);
   };
 
   return (
     <>
-      <button onClick={() => setIsJobModalOpen(true)}>+ Add Job</button>
 
       <div style={{ display: "flex", gap: "16px", padding: "24px" }}>
         {COLUMNS.map((column) => (
