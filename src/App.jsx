@@ -16,7 +16,7 @@ function App() {
 
   return(
     <>
-      <AppHeader onAddJob={() => setIsJobModalOpen(true)} stats={stats} />
+      <AppHeader onAddJob={() => setIsJobModalOpen(true)} stats={stats} jobs={jobs} />
         <Board jobs={jobs} 
                addJob={addJob} 
                updateJob={updateJob} 

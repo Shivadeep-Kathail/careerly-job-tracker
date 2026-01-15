@@ -1,5 +1,6 @@
 import Column from "./column";
 import JobModal from "./jobModal";
+import NoJobs from "./noJobs";
 import { COLUMNS } from "../data/columns";
 import { useState } from "react";
 
@@ -16,9 +17,24 @@ const Board = ({ jobs, addJob, updateJob,isJobModalOpen, deleteJob, closeModal, 
     setJobToEdit(null);
   };
 
+  if (jobs.length === 0) {
+    return (
+      <>
+        <NoJobs onAddJob={openModal} />
+
+        <JobModal
+          isOpen={isJobModalOpen}
+          onClose={handleCloseModal}
+          addJob={addJob}
+          updateJob={updateJob}
+          jobToEdit={jobToEdit}
+        />
+      </>
+    );
+  }
+
   return (
     <>
-
       <div style={{ display: "flex", gap: "16px", padding: "24px" }}>
         {COLUMNS.map((column) => (
           <Column

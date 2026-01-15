@@ -63,6 +63,9 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
   }
 }, [jobToEdit, isOpen]);
 
+const isFormValid =
+  role.trim() && company.trim() && location.trim();
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -169,7 +172,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
           <button type="button" onClick={onClose}>
             Cancel
           </button>
-          <button type="submit"> {jobToEdit ? "Save Changes" : "Add Job"} </button>
+          <button type="submit" disabled={!isFormValid}> {jobToEdit ? "Save Changes" : "Add Job"} </button>
 
         </div>
       </form>

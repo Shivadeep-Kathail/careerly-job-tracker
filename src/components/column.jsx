@@ -1,10 +1,8 @@
 import JobCard from "./jobCard";
 
 const Column = ({ column, jobs, onEditJob, onDelete }) => {
-  const filteredJobs = jobs.filter(
-    (job) => job.status === column.id
-  );
-    
+  const filteredJobs = jobs.filter((job) => job.status === column.id);
+
   return (
     <>
       <div
@@ -16,8 +14,26 @@ const Column = ({ column, jobs, onEditJob, onDelete }) => {
         }}
       >
         <h3>{column.title}</h3>
+        {filteredJobs.length === 0 && (
+          <p
+            style={{
+              color: "#7a7a7a",
+              fontSize: "14px",
+              textAlign: "center",
+              marginTop: "12px",
+            }}
+          >
+            No applications yet
+          </p>
+        )}
         {filteredJobs.map((job) => (
-          <JobCard key={job.id} job={job} onEdit={() => onEditJob(job)} onDelete={onDelete} />
+          <div key={job.id} style={{ marginTop: "10px" }}>
+            <JobCard
+              job={job}
+              onEdit={() => onEditJob(job)}
+              onDelete={onDelete}
+            />
+          </div>
         ))}
       </div>
     </>

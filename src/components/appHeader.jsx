@@ -1,6 +1,9 @@
 import Stat from "./stats";
 
-const AppHeader = ({ onAddJob, stats }) => {
+const AppHeader = ({ onAddJob, stats, jobs=[] }) => {
+
+  const hasJobs = jobs.length > 0;
+
   return (
     <header style={{display:"flex",
                     justifyContent:"space-between",
@@ -11,11 +14,11 @@ const AppHeader = ({ onAddJob, stats }) => {
         <h2>Careerly</h2>
         <p>Track your job applications effortlessly</p>
       </div>
-       <div style={{ display: "flex", gap: "10px", border: "1px solid #d3c7c7ff", padding: "8px" }}>
+       {hasJobs&& (<div style={{ display: "flex", gap: "10px", border: "1px solid #d3c7c7ff", padding: "8px" }}>
         <Stat label="Total" value={stats.total} />
         <Stat label="Interview" value={stats.interview} />
         <Stat label="Offer" value={stats.offer} />
-      </div>
+      </div>)}
       <div>
         <button onClick={onAddJob}>+ Add Job</button>
       </div>
