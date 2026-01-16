@@ -1,15 +1,23 @@
+import { useState } from "react";
 import Column from "./column";
 import JobModal from "./jobModal";
 import NoJobs from "./noJobs";
 import { COLUMNS } from "../data/columns";
-import { useState } from "react";
 
-const Board = ({ jobs, addJob, updateJob,isJobModalOpen, deleteJob, closeModal, openModal }) => {
+const Board = ({
+  jobs,
+  addJob,
+  updateJob,
+  deleteJob,
+  isJobModalOpen,
+  openModal,
+  closeModal,
+}) => {
   const [jobToEdit, setJobToEdit] = useState(null);
 
   const handleEditJob = (job) => {
     setJobToEdit(job);
-    openModal()
+    openModal();
   };
 
   const handleCloseModal = () => {
@@ -17,11 +25,21 @@ const Board = ({ jobs, addJob, updateJob,isJobModalOpen, deleteJob, closeModal, 
     setJobToEdit(null);
   };
 
+  // ✅ FINAL, SAFE status update
+  const updateJobStatus = (jobId, status) => {
+    const job = jobs.find((j) => j.id === jobId);
+    if (!job) return;
+
+    updateJob({
+      ...job,
+      status,
+    });
+  };
+
   if (jobs.length === 0) {
     return (
       <>
         <NoJobs onAddJob={openModal} />
-
         <JobModal
           isOpen={isJobModalOpen}
           onClose={handleCloseModal}
@@ -40,9 +58,10 @@ const Board = ({ jobs, addJob, updateJob,isJobModalOpen, deleteJob, closeModal, 
           <Column
             key={column.id}
             column={column}
-            jobs={jobs}
+            jobs={jobs.filter((job) => job.status === column.id)}
             onEditJob={handleEditJob}
-            onDelete={deleteJob}
+            onDeleteJob={deleteJob}
+            updateJobStatus={updateJobStatus}
           />
         ))}
       </div>

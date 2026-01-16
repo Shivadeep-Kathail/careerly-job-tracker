@@ -1,29 +1,140 @@
+import { useState } from "react";
 import Stat from "./stats";
+import { Bookmark } from "lucide-react";
 
-const AppHeader = ({ onAddJob, stats, jobs=[] }) => {
-
+const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
   const hasJobs = jobs.length > 0;
+  const [isHover, setIsHover] = useState(false);
 
   return (
-    <header style={{display:"flex",
-                    justifyContent:"space-between",
-                    alignItems: "center",
-                    padding: "2.5px",
-                    borderBottom: "1px solid #d3c7c7ff",}}>
-      <div>
-        <h2>Careerly</h2>
-        <p>Track your job applications effortlessly</p>
+    <header
+      style={{
+        height: "72px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 28px",
+        background: "#ffffff",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+      }}
+    >
+      {/* LEFT */}
+      <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+        <div
+          style={{
+            width: "44px",
+            height: "44px",
+            borderRadius: "12px",
+            background: "linear-gradient(135deg, #5148f5, #ea33cc)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            boxShadow: "0 6px 14px rgba(0,0,0,0.18)",
+          }}
+        >
+          <Bookmark size={20} stroke="#ffffff" fill="#ffffff" strokeWidth={2.5} />
+
+          {/* green dot */}
+          <span
+            style={{
+              position: "absolute",
+              top: "-4px",
+              right: "-4px",
+              width: "9px",
+              height: "9px",
+              backgroundColor: "#22c55e",
+              borderRadius: "50%",
+              border: "2px solid #ffffff",
+            }}
+          />
+        </div>
+
+        <div>
+          <p
+            style={{
+              fontSize: "24px",
+              fontWeight: 500,
+              margin: 0,
+              lineHeight: 1.15,
+              background:
+                "linear-gradient(90deg, rgba(8,19,242,0.9), rgba(180,32,254,1), rgba(205,36,140,0.9))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Careerly
+          </p>
+          <p style={{ margin: 0, fontSize: "13.5px", color: "#6b7280" }}>
+            Track your job applications effortlessly
+          </p>
+        </div>
       </div>
-       {hasJobs&& (<div style={{ display: "flex", gap: "10px", border: "1px solid #d3c7c7ff", padding: "8px" }}>
-        <Stat label="Total" value={stats.total} />
-        <Stat label="Interview" value={stats.interview} />
-        <Stat label="Offer" value={stats.offer} />
-      </div>)}
-      <div>
-        <button onClick={onAddJob}>+ Add Job</button>
-      </div>
+
+      {/* CENTER (stats only if jobs exist) */}
+      {hasJobs && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "44px",
+            background: "linear-gradient(135deg, rgba(236, 238, 255, 0.94) 0%, rgba(254, 233, 255, 0.89) 100%)",
+            borderRadius: "14px",
+            padding: "0 18px",
+            boxShadow: "inset 0 0 0 1px #ececf3",
+          }}
+        >
+          <Stat label="Total" value={stats.total} />
+          <Divider />
+          <Stat label="Interviews" value={stats.interview} highlight="#8b5cf6" />
+          <Divider />
+          <Stat label="Offers" value={stats.offer} highlight="#22c55e" />
+        </div>
+      )}
+
+      {/* RIGHT */}
+      <button
+        onClick={onAddJob}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        style={{
+          background: isHover
+            ? "linear-gradient(90deg, rgba(8,19,242,1), rgba(180,32,254,1), rgba(205,36,140,1))"
+            : "linear-gradient(90deg, rgba(8,19,242,0.85), rgba(180,32,254,0.95), rgba(205,36,140,0.9))",
+          color: "#ffffff",
+          height: "40px",
+          padding: "0 22px",
+          border: "none",
+          borderRadius: "999px",
+          fontSize: "14px",
+          fontWeight: 500,
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          cursor: "pointer",
+          boxShadow: isHover
+            ? "0 10px 24px rgba(0,0,0,0.18)"
+            : "0 8px 20px rgba(0,0,0,0.14)",
+          transform: isHover ? "scale(1.03)" : "scale(1)",
+          transition: "all 0.15s ease",
+        }}
+      >
+        <span style={{ fontSize: "18px", lineHeight: 1 }}>+</span>
+        Add Job
+      </button>
     </header>
   );
 };
+
+const Divider = () => (
+  <span
+    style={{
+      width: "1px",
+      height: "26px",
+      background: "#e5e7eb",
+      margin: "0 14px",
+    }}
+  />
+);
 
 export default AppHeader;

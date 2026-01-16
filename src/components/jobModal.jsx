@@ -163,6 +163,7 @@ const isFormValid =
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
+              maxLength={50}
               placeholder="Add any additional notes or reminders..."
             />
           </div>
