@@ -60,7 +60,7 @@ const NoJobs = ({ onAddJob }) => {
     padding: "10px 18px",
     border: "none",
     borderRadius: "12px",
-    fontSize: "14px",
+    fontSize: "16px",
     fontWeight: 500,
     cursor: "pointer",
     boxShadow: isHover

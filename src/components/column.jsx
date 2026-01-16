@@ -19,7 +19,7 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         {Icon && <Icon size={18} color={column.color} />}
-        <span style={{ fontSize: "18px", fontWeight: 500 }}>
+        <span style={{ fontSize: "20px", fontWeight: 500 }}>
           {column.title}
         </span>
         <span
@@ -30,7 +30,7 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
             background: column.bg,
             color: column.color,
             fontSize: "14px",
-            fontWeight: 500,
+            fontWeight: 600,
           }}
         >
           {jobs.length}
@@ -49,14 +49,15 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
         {jobs.length === 0 ? (
           <div
             style={{
-              border: "1px dashed #d1d5db",
+              border: "1.5px dashed #d1d5db",
               borderRadius: "12px",
               padding: "20px",
               textAlign: "center",
               color: "#9ca3af",
+              fontSize: "14px",
             }}
           >
-            No applications yet
+            No jobs here yet
           </div>
         ) : (
           jobs.map((job) => (

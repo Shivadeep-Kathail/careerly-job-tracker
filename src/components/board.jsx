@@ -25,7 +25,7 @@ const Board = ({
     setJobToEdit(null);
   };
 
-  // ✅ FINAL, SAFE status update
+  // ✅ SAFE status update
   const updateJobStatus = (jobId, status) => {
     const job = jobs.find((j) => j.id === jobId);
     if (!job) return;
@@ -36,36 +36,34 @@ const Board = ({
     });
   };
 
-  if (jobs.length === 0) {
-    return (
-      <>
-        <NoJobs onAddJob={openModal} />
-        <JobModal
-          isOpen={isJobModalOpen}
-          onClose={handleCloseModal}
-          addJob={addJob}
-          updateJob={updateJob}
-          jobToEdit={jobToEdit}
-        />
-      </>
-    );
-  }
-
   return (
     <>
-      <div style={{ display: "flex", gap: "16px", padding: "24px" }}>
-        {COLUMNS.map((column) => (
-          <Column
-            key={column.id}
-            column={column}
-            jobs={jobs.filter((job) => job.status === column.id)}
-            onEditJob={handleEditJob}
-            onDeleteJob={deleteJob}
-            updateJobStatus={updateJobStatus}
-          />
-        ))}
-      </div>
+      {/* CONTENT */}
+      {jobs.length === 0 ? (
+        <NoJobs onAddJob={openModal} />
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            gap: "16px",
+            padding: "24px",
+            alignItems: "flex-start",
+          }}
+        >
+          {COLUMNS.map((column) => (
+            <Column
+              key={column.id}
+              column={column}
+              jobs={jobs.filter((job) => job.status === column.id)}
+              onEditJob={handleEditJob}
+              onDeleteJob={deleteJob}
+              updateJobStatus={updateJobStatus}
+            />
+          ))}
+        </div>
+      )}
 
+      {/* MODAL (mounted once) */}
       <JobModal
         isOpen={isJobModalOpen}
         onClose={handleCloseModal}

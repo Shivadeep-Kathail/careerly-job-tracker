@@ -14,8 +14,13 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
         alignItems: "center",
         justifyContent: "space-between",
         padding: "0 28px",
-        background: "#ffffff",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+        background:
+          "linear-gradient(-45deg, rgba(247, 244, 255, 0.94) 50%, rgba(255, 245, 245, 0.89) 50%)",
+        borderBottom: "1px solid rgba(0,0,0,0.04)",
+        boxShadow: "0 6px 12px -4px rgba(0,0,0,0.08)",
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
       }}
     >
       {/* LEFT */}
@@ -33,7 +38,12 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
             boxShadow: "0 6px 14px rgba(0,0,0,0.18)",
           }}
         >
-          <Bookmark size={20} stroke="#ffffff" fill="#ffffff" strokeWidth={2.5} />
+          <Bookmark
+            size={20}
+            stroke="#ffffff"
+            fill="#ffffff"
+            strokeWidth={2.5}
+          />
 
           {/* green dot */}
           <span
@@ -65,7 +75,7 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
           >
             Careerly
           </p>
-          <p style={{ margin: 0, fontSize: "13.5px", color: "#6b7280" }}>
+          <p style={{ margin: 0, fontSize: "14px", color: "#6b7280" }}>
             Track your job applications effortlessly
           </p>
         </div>
@@ -78,7 +88,8 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
             display: "flex",
             alignItems: "center",
             height: "44px",
-            background: "linear-gradient(135deg, rgba(236, 238, 255, 0.94) 0%, rgba(254, 233, 255, 0.89) 100%)",
+            background:
+              "linear-gradient(135deg, rgba(232, 234, 255, 0.94) 0%, rgba(254, 236, 255, 0.89) 100%)",
             borderRadius: "14px",
             padding: "0 18px",
             boxShadow: "inset 0 0 0 1px #ececf3",
@@ -86,7 +97,11 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
         >
           <Stat label="Total" value={stats.total} />
           <Divider />
-          <Stat label="Interviews" value={stats.interview} highlight="#8b5cf6" />
+          <Stat
+            label="Interviews"
+            value={stats.interview}
+            highlight="#8b5cf6"
+          />
           <Divider />
           <Stat label="Offers" value={stats.offer} highlight="#22c55e" />
         </div>
@@ -105,8 +120,8 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
           height: "40px",
           padding: "0 22px",
           border: "none",
-          borderRadius: "999px",
-          fontSize: "14px",
+          borderRadius: "14px",
+          fontSize: "18px",
           fontWeight: 500,
           display: "flex",
           alignItems: "center",
@@ -131,7 +146,7 @@ const Divider = () => (
     style={{
       width: "1px",
       height: "26px",
-      background: "#e5e7eb",
+      background: "#e2c3e3ff",
       margin: "0 14px",
     }}
   />

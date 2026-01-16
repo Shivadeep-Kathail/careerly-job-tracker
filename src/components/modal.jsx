@@ -1,13 +1,41 @@
-const Modal=({isOpen, onClose, children}) => {
-    if(!isOpen) return null;
+import { useEffect } from "react";
 
-    return(
-        <div onClick={onClose}>
-            <div onClick={(e)=>e.stopPropagation()}>
-                {children}
-            </div>
-        </div>
-    )
-}
+const Modal = ({ isOpen, onClose, children }) => {
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = "hidden";
+    return () => (document.body.style.overflow = "auto");
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div style={overlayStyle} onClick={onClose}>
+      <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+        {children}
+      </div>
+    </div>
+  );
+};
 
 export default Modal;
+
+const overlayStyle = {
+  position: "fixed",
+  inset: 0,
+  background: "rgba(0,0,0,0.4)",
+  backdropFilter: "blur(6px)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "16px",
+  zIndex: 1000,
+};
+
+const modalStyle = {
+  width: "100%",
+  maxWidth: "520px",
+  background: "#ffffff",
+  borderRadius: "20px",
+  boxShadow: "0 25px 50px rgba(0,0,0,0.25)",
+  overflow: "hidden",
+};

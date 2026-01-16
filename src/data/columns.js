@@ -11,8 +11,8 @@ export const COLUMNS = [
     id: "wishlist",
     title: "Wishlist",
     icon: Star,
-    color: "#f59e0b",
-    bg: "#fff7ed",
+    color: "#b45309",
+    bg: "#ffedd5",
   },
   {
     id: "applied",
@@ -25,8 +25,8 @@ export const COLUMNS = [
     id: "interview",
     title: "Interview",
     icon: MessagesSquare,
-    color: "#9333ea",
-    bg: "#f5f3ff",
+    color: "#9333EA",
+    bg: "#F3E8FF",
   },
   {
     id: "offer",
@@ -40,6 +40,6 @@ export const COLUMNS = [
     title: "Rejected",
     icon: XCircle,
     color: "#dc2626",
-    bg: "#fef2f2",
+    bg: "#fee2e2",
   },
 ];

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { formatAppliedDate } from "../utilities/date";
 import {
   Trash2,
   SquarePen,
@@ -9,7 +10,7 @@ import {
 } from "lucide-react";
 
 const STATUS_OPTIONS = [
-  { key: "wishlist", label: "Saved" },
+  { key: "wishlist", label: "Wishlist" },
   { key: "applied", label: "Applied" },
   { key: "interview", label: "Interview" },
   { key: "offer", label: "Offer" },
@@ -17,10 +18,22 @@ const STATUS_OPTIONS = [
 ];
 
 const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
-  const [isHover, setIsHover] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const hasNotes = job.notes?.trim().length > 0;
+  const currentStatusLabel =
+    STATUS_OPTIONS.find((s) => s.key === job.status)?.label || job.status;
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const handleDelete = () => {
     if (
@@ -32,106 +45,145 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
     }
   };
 
-  const selectStatus = (status) => {
-    onStatusChange(job.id, status);
-    setIsOpen(false);
-  };
-
   return (
     <div
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       style={{
-        background: "#fff",
-        borderRadius: "16px",
-        padding: "16px",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-        border: isHover ? "2px solid #93c5fd" : "2px solid transparent",
-        transition: "all 0.2s ease",
+        background: "#ffffff",
+        borderRadius: "20px",
+        padding: "20px",
+        border: "1px solid",
+        borderColor: hover ? "#52b7ff" : "#e5e7eb",
+        transform: hover ? "translateY(-4px)" : "translateY(0)",
+        boxShadow: hover
+          ? "0 18px 40px rgba(0,0,0,0.12)"
+          : "0 10px 24px rgba(0,0,0,0.08)",
+        transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
         position: "relative",
+        zIndex: open ? 50 : 1,
       }}
     >
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
-          <h4 style={{ margin: 0, fontSize: "18px", fontWeight: 600 }}>
+          <h3 style={{ margin: 0, fontSize: "22px", fontWeight: 500 }}>
             {job.role}
-          </h4>
-          <p style={{ marginTop: "6px", fontWeight: 500 }}>
+          </h3>
+          <p style={{ marginTop: "6px", fontSize: "16px", color: "#374151" }}>
             {job.company}
           </p>
         </div>
 
-        {isHover && (
-          <div style={{ display: "flex", gap: "10px" }}>
-            <SquarePen size={18} onClick={() => onEdit(job)} />
-            <Trash2 size={18} color="#ef4444" onClick={handleDelete} />
+        {hover && (
+          <div style={{ display: "flex", gap: "12px" }}>
+            <SquarePen
+              size={18}
+              style={{ color: "#9ca3af" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#2563eb")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#9ca3af")}
+              onClick={() => onEdit(job)}
+            />
+
+            <Trash2
+              size={18}
+              style={{ color: "#9ca3af" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#ef4444")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#9ca3af")}
+              onClick={handleDelete}
+            />
           </div>
         )}
       </div>
 
       {/* Meta */}
-      <div style={{ marginTop: "8px", color: "#6b7280", fontSize: "14px" }}>
-        <div style={{ display: "flex", gap: "6px" }}>
+      <div
+        style={{
+          marginTop: "12px",
+          fontSize: "14px",
+          color: "#6b7280",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
+        <div style={{ display: "flex", gap: "8px" }}>
           <MapPin size={14} /> {job.location}
         </div>
-        <div style={{ display: "flex", gap: "6px" }}>
-          <Calendar size={14} /> Applied {job.appliedDate}
+        <div style={{ display: "flex", gap: "8px" }}>
+          <Calendar size={14} /> Applied on{" "}
+          {formatAppliedDate(job.appliedDate)}
         </div>
       </div>
 
-      {/* Status + Link */}
+      {/* Status + External Link */}
       <div
         style={{
+          marginTop: "16px",
           display: "flex",
           justifyContent: "space-between",
-          marginTop: "12px",
+          alignItems: "center",
         }}
       >
-        <div style={{ position: "relative" }}>
+        <div ref={dropdownRef} style={{ position: "relative" }}>
           <div
-            onClick={() => setIsOpen((v) => !v)}
+            onClick={() => setOpen((v) => !v)}
             style={{
-              padding: "6px 14px",
-              borderRadius: "999px",
               background: column.bg,
               color: column.color,
+              padding: "8px 16px",
+              borderRadius: "12px",
+              fontWeight: 550,
               cursor: "pointer",
               display: "flex",
+              alignItems: "center",
               gap: "6px",
-              fontSize: "14px",
-              fontWeight: 500,
+              transform: open ? "scale(1.04)" : "scale(1)",
+              transition: "all 0.2s ease",
             }}
           >
-            {job.status}
-            <ChevronDown size={14} />
+            {currentStatusLabel}
+            <ChevronDown
+              size={14}
+              style={{
+                transform: open ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.25s ease",
+              }}
+            />
           </div>
 
-          {isOpen && (
+          {open && (
             <div
               style={{
                 position: "absolute",
-                top: "42px",
+                top: "44px",
                 left: 0,
-                background: "#5b5b5f",
-                borderRadius: "14px",
-                padding: "6px",
                 width: "160px",
-                zIndex: 50,
+                background: "#4b4b50",
+                borderRadius: "16px",
+                padding: "6px",
+                zIndex: 100,
               }}
             >
               {STATUS_OPTIONS.map((s) => (
                 <div
                   key={s.key}
-                  onClick={() => selectStatus(s.key)}
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: "10px",
-                    background:
-                      job.status === s.key ? "#6d9bf1" : "transparent",
-                    color: "#fff",
-                    cursor: "pointer",
+                  onClick={() => {
+                    onStatusChange(job.id, s.key);
+                    setOpen(false);
                   }}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: "10px",
+                    cursor: "pointer",
+                    color: "#fff",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "#2563eb")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "transparent")
+                  }
                 >
                   {job.status === s.key && "✓ "} {s.label}
                 </div>
@@ -142,21 +194,38 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
 
         {job.link && (
           <a href={job.link} target="_blank" rel="noreferrer">
-            <ExternalLink size={18} color="#9ca3af" />
+            <ExternalLink
+              size={18}
+              style={{ color: "#9ca3af" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "#525457")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "#9ca3af")
+              }
+            />
           </a>
         )}
       </div>
 
-      {hasNotes && (
+      {/* ✅ Notes (correct placement) */}
+      {job.notes?.trim() && (
         <>
           <div
             style={{
               height: "1px",
               background: "#e5e7eb",
-              margin: "10px 0",
+              margin: "16px 0",
             }}
           />
-          <em style={{ fontSize: "14px", color: "#7e7e7e" }}>
+          <em
+            style={{
+              margin: 0,
+              fontSize: "14px",
+              color: "#6b7280",
+              lineHeight: 1.6,
+            }}
+          >
             {job.notes}
           </em>
         </>
