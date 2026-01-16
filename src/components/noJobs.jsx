@@ -5,76 +5,91 @@ const NoJobs = ({ onAddJob }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
-    <div
-      style={{
-        minHeight: "70vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        gap: "16px",
-      }}
-    >
-      {/* Icon container */}
-      <div
-        style={{
-          width: "72px",
-          height: "72px",
-          borderRadius: "15px",
-          background:
-            "linear-gradient(135deg, #4c4ff0ff, #9d42f1ff)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#fff",
-          boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-        }}
-      >
+    <div style={styles.container}>
+      {/* Icon */}
+      <div style={styles.iconWrap}>
         <Briefcase size={32} strokeWidth={2.2} />
       </div>
-      <h3 style={{ margin: 0, fontSize: "20px" }}>
-        No applications yet
-      </h3>
-      <p
-        style={{
-          maxWidth: "420px",
-          fontSize: "17px",
-          color: "#6b7280",
-          lineHeight: 1.2,
-        }}
-      >
+
+      <h3 style={styles.title}>No applications yet</h3>
+
+      <p style={styles.description}>
         Start tracking your job applications by adding your first one.
         Keep all your opportunities organized in one place.
       </p>
 
       <button
-  onClick={onAddJob}
-  onMouseEnter={() => setIsHover(true)}
-  onMouseLeave={() => setIsHover(false)}
-  style={{
-    background: isHover
-      ? "linear-gradient(90deg, rgba(8, 19, 242, 1) 0%, rgba(180, 32, 254, 1) 100%)"
-      : "linear-gradient(90deg, rgba(8, 19, 242, 0.85) 0%, rgba(180, 32, 254, 0.95) 100%)",
-    color: "#fff",
+        onClick={onAddJob}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        style={{
+          ...styles.button,
+          ...(isHover ? styles.buttonHover : {}),
+        }}
+      >
+        Add Your First Job
+      </button>
+    </div>
+  );
+};
+
+export default NoJobs;
+
+const styles = {
+  container: {
+    minHeight: "70vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    gap: "16px",
+  },
+
+  iconWrap: {
+    width: "72px",
+    height: "72px",
+    borderRadius: "15px",
+    background: "linear-gradient(135deg, #4c4ff0, #9d42f1)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#ffffff",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+  },
+
+  title: {
+    margin: 0,
+    fontSize: "20px",
+    fontWeight: 500,
+  },
+
+  description: {
+    maxWidth: "420px",
+    fontSize: "17px",
+    color: "#6b7280",
+    lineHeight: 1.2,
+  },
+
+  button: {
+    background:
+      "linear-gradient(90deg, rgba(8,19,242,0.85), rgba(180,32,254,0.95))",
+    color: "#ffffff",
     padding: "10px 18px",
     border: "none",
     borderRadius: "12px",
     fontSize: "16px",
     fontWeight: 500,
     cursor: "pointer",
-    boxShadow: isHover
-      ? "0 10px 22px rgba(0,0,0,0.18)"
-      : "0 8px 18px rgba(0,0,0,0.14)",
-    transform: isHover ? "scale(1.03)" : "scale(1)",
+    boxShadow: "0 8px 18px rgba(0,0,0,0.14)",
+    transform: "scale(1)",
     transition: "all 0.15s ease",
-  }}
->
-  Add Your First Job
-</button>
+  },
 
-    </div>
-  );
+  buttonHover: {
+    background:
+      "linear-gradient(90deg, rgba(8,19,242,1), rgba(180,32,254,1))",
+    boxShadow: "0 10px 22px rgba(0,0,0,0.18)",
+    transform: "scale(1.03)",
+  },
 };
-
-export default NoJobs;

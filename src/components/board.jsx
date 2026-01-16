@@ -42,14 +42,7 @@ const Board = ({
       {jobs.length === 0 ? (
         <NoJobs onAddJob={openModal} />
       ) : (
-        <div
-          style={{
-            display: "flex",
-            gap: "16px",
-            padding: "24px",
-            alignItems: "flex-start",
-          }}
-        >
+        <div style={styles.board}>
           {COLUMNS.map((column) => (
             <Column
               key={column.id}
@@ -63,7 +56,7 @@ const Board = ({
         </div>
       )}
 
-      {/* MODAL (mounted once) */}
+      {/* MODAL */}
       <JobModal
         isOpen={isJobModalOpen}
         onClose={handleCloseModal}
@@ -76,3 +69,12 @@ const Board = ({
 };
 
 export default Board;
+
+const styles = {
+  board: {
+    display: "flex",
+    gap: "16px",
+    padding: "24px",
+    alignItems: "flex-start",
+  },
+};

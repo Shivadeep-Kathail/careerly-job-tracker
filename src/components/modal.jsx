@@ -3,14 +3,19 @@ import { useEffect } from "react";
 const Modal = ({ isOpen, onClose, children }) => {
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
-    return () => (document.body.style.overflow = "auto");
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
-    <div style={overlayStyle} onClick={onClose}>
-      <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+    <div style={styles.overlay} onClick={onClose}>
+      <div
+        style={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+      >
         {children}
       </div>
     </div>
@@ -19,23 +24,25 @@ const Modal = ({ isOpen, onClose, children }) => {
 
 export default Modal;
 
-const overlayStyle = {
-  position: "fixed",
-  inset: 0,
-  background: "rgba(0,0,0,0.4)",
-  backdropFilter: "blur(6px)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "16px",
-  zIndex: 1000,
-};
+const styles = {
+  overlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.4)",
+    backdropFilter: "blur(6px)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "16px",
+    zIndex: 1000,
+  },
 
-const modalStyle = {
-  width: "100%",
-  maxWidth: "520px",
-  background: "#ffffff",
-  borderRadius: "20px",
-  boxShadow: "0 25px 50px rgba(0,0,0,0.25)",
-  overflow: "hidden",
+  modal: {
+    width: "100%",
+    maxWidth: "520px",
+    background: "#ffffff",
+    borderRadius: "20px",
+    boxShadow: "0 25px 50px rgba(0,0,0,0.25)",
+    overflow: "hidden",
+  },
 };

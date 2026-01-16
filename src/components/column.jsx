@@ -4,33 +4,17 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
   const Icon = column.icon;
 
   return (
-    <div
-      style={{
-        flex: 1,
-        background: "rgba(255,255,255,0.6)",
-        backdropFilter: "blur(6px)",
-        borderRadius: "16px",
-        padding: "16px",
-        display: "flex",
-        flexDirection: "column",
-        boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-      }}
-    >
+    <div style={styles.column}>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      <div style={styles.header}>
         {Icon && <Icon size={18} color={column.color} />}
-        <span style={{ fontSize: "20px", fontWeight: 500 }}>
-          {column.title}
-        </span>
+        <span style={styles.title}>{column.title}</span>
+
         <span
           style={{
-            marginLeft: "6px",
-            padding: "2px 10px",
-            borderRadius: "999px",
+            ...styles.count,
             background: column.bg,
             color: column.color,
-            fontSize: "14px",
-            fontWeight: 600,
           }}
         >
           {jobs.length}
@@ -38,25 +22,9 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
       </div>
 
       {/* Content */}
-      <div
-        style={{
-          marginTop: "16px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-        }}
-      >
+      <div style={styles.content}>
         {jobs.length === 0 ? (
-          <div
-            style={{
-              border: "1.5px dashed #d1d5db",
-              borderRadius: "12px",
-              padding: "20px",
-              textAlign: "center",
-              color: "#9ca3af",
-              fontSize: "14px",
-            }}
-          >
+          <div style={styles.empty}>
             No jobs here yet
           </div>
         ) : (
@@ -77,3 +45,51 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
 };
 
 export default Column;
+
+const styles = {
+  column: {
+    flex: 1,
+    background: "rgba(255,255,255,0.6)",
+    backdropFilter: "blur(6px)",
+    borderRadius: "16px",
+    padding: "16px",
+    display: "flex",
+    flexDirection: "column",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+  },
+
+  header: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+
+  title: {
+    fontSize: "20px",
+    fontWeight: 500,
+  },
+
+  count: {
+    marginLeft: "6px",
+    padding: "2px 10px",
+    borderRadius: "999px",
+    fontSize: "14px",
+    fontWeight: 600,
+  },
+
+  content: {
+    marginTop: "16px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+
+  empty: {
+    border: "1.5px dashed #d1d5db",
+    borderRadius: "12px",
+    padding: "20px",
+    textAlign: "center",
+    color: "#9ca3af",
+    fontSize: "14px",
+  },
+};
