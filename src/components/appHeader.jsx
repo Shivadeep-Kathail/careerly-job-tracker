@@ -1,10 +1,9 @@
-import { useState } from "react";
 import Stat from "./stats";
 import { Bookmark } from "lucide-react";
+import Button from "./button";
 
 const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
   const hasJobs = jobs.length > 0;
-  const [isHover, setIsHover] = useState(false);
 
   return (
     <header style={styles.header}>
@@ -35,18 +34,10 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
       )}
 
       {/* RIGHT */}
-      <button
-        onClick={onAddJob}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        style={{
-          ...styles.addButton,
-          ...(isHover ? styles.addButtonHover : {}),
-        }}
-      >
+      <Button size="lg" onClick={onAddJob}>
         <span style={styles.plus}>+</span>
         Add Job
-      </button>
+      </Button>
     </header>
   );
 };
@@ -63,9 +54,9 @@ const styles = {
     justifyContent: "space-between",
     padding: "0 28px",
     background:
-      "linear-gradient(-45deg, rgba(241, 238, 255, 0.94) 50%, rgba(251, 237, 249, 0.89) 50%)",
+      "linear-gradient(105deg, rgba(241, 238, 255, 0.94) 20%, rgba(251, 237, 249, 0.89) 80%)",
     borderBottom: "1px solid rgba(0,0,0,0.04)",
-    boxShadow: "0 6px 12px -4px rgba(0,0,0,0.08)",
+    boxShadow: "0 6px 12px -4px rgba(0, 0, 0, 0.15)",
     position: "sticky",
     top: 0,
     zIndex: 50,
@@ -133,32 +124,6 @@ const styles = {
     height: "26px",
     background: "#e2c3e3",
     margin: "0 14px",
-  },
-
-  addButton: {
-    background:
-      "linear-gradient(90deg, rgba(8,19,242,0.85), rgba(180,32,254,0.95), rgba(205,36,140,0.9))",
-    color: "#fff",
-    height: "40px",
-    padding: "0 22px",
-    border: "none",
-    borderRadius: "14px",
-    fontSize: "18px",
-    fontWeight: 500,
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    cursor: "pointer",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.14)",
-    transform: "scale(1)",
-    transition: "all 0.15s ease",
-  },
-
-  addButtonHover: {
-    background:
-      "linear-gradient(90deg, rgba(8,19,242,1), rgba(180,32,254,1), rgba(205,36,140,1))",
-    boxShadow: "0 10px 24px rgba(0,0,0,0.18)",
-    transform: "scale(1.03)",
   },
 
   plus: {

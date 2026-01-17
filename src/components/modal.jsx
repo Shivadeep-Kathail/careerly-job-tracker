@@ -2,11 +2,21 @@ import { useEffect } from "react";
 
 const Modal = ({ isOpen, onClose, children }) => {
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden";
+    if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    const handleEsc = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
     return () => {
       document.body.style.overflow = "auto";
+      window.removeEventListener("keydown", handleEsc);
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

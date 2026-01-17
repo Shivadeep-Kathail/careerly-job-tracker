@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Modal from "./modal";
+import Button from "./button";
+import Input from "./input";
 
 const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
   const [role, setRole] = useState("");
@@ -67,44 +69,77 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
 
       {/* Form */}
       <form onSubmit={handleSubmit} style={formStyle}>
-        <Field label="Job Title" required value={role} onChange={setRole} placeholder="e.g., Software Engineer Intern" />
-        <Field label="Company Name" required value={company} onChange={setCompany} placeholder="e.g., Google" />
-        <Field label="Location" required value={location} onChange={setLocation} placeholder="e.g., San Francisco, CA" />
-        <Field label="Application Link" value={link} onChange={setLink} placeholder="https://..." type="url" />
+        <Input
+          label="Job Title"
+          required
+          value={role}
+          onChange={setRole}
+          placeholder="e.g., Software Engineer Intern"
+        />
+
+        <Input
+          label="Company Name"
+          required
+          value={company}
+          onChange={setCompany}
+          placeholder="e.g., Google"
+        />
+
+        <Input
+          label="Location"
+          required
+          value={location}
+          onChange={setLocation}
+          placeholder="e.g., San Francisco, CA"
+        />
+
+        <Input
+          label="Application Link"
+          type="url"
+          value={link}
+          onChange={setLink}
+          placeholder="https://..."
+        />
 
         <div style={rowStyle}>
-          <div>
-            <label style={labelStyle}>Application Date</label>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} style={inputStyle} />
-          </div>
-
-          <div>
-            <label style={labelStyle}>Status</label>
-            <select value={status} onChange={(e) => setStatus(e.target.value)} style={inputStyle}>
-              <option value="wishlist">Saved</option>
-              <option value="applied">Applied</option>
-              <option value="interview">Interview</option>
-              <option value="offer">Offer</option>
-              <option value="rejected">Rejected</option>
-            </select>
-          </div>
-        </div>
-
-        <div style={{ marginBottom: "28px" }}>
-          <label style={labelStyle}>Notes</label>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Add any additional notes or reminders..."
-            style={{ ...inputStyle, height: "120px", resize: "none" }}
+          <Input
+            label="Application Date"
+            type="date"
+            value={date}
+            onChange={setDate}
           />
+
+          <Input
+            label="Status"
+            as="select"
+            value={status}
+            onChange={setStatus}
+          >
+            <option value="wishlist">Saved</option>
+            <option value="applied">Applied</option>
+            <option value="interview">Interview</option>
+            <option value="offer">Offer</option>
+            <option value="rejected">Rejected</option>
+          </Input>
         </div>
 
+        <Input
+          label="Notes"
+          as="textarea"
+          value={notes}
+          onChange={setNotes}
+          placeholder="Add any additional notes or reminders..."
+        />
+
+        {/* Footer */}
         <div style={footerStyle}>
-          <button type="button" onClick={onClose} style={cancelBtn}>Cancel</button>
-          <button type="submit" disabled={!isFormValid} style={{ ...primaryBtn, opacity: isFormValid ? 1 : 0.6 }}>
+          <Button variant="secondary" onClick={onClose} style={{ flex: 1 }}>
+            Cancel
+          </Button>
+
+          <Button type="submit" disabled={!isFormValid} style={{ flex: 1 }}>
             {jobToEdit ? "Save Changes" : "Add Job"}
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>
@@ -113,23 +148,6 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
 
 export default JobModal;
 
-/* ---------- Field ---------- */
-const Field = ({ label, required, value, onChange, placeholder, type = "text" }) => (
-  <div style={{ marginBottom: "22px" }}>
-    <label style={labelStyle}>
-      {label} {required && <span style={{ color: "#ef4444" }}>*</span>}
-    </label>
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      required={required}
-      style={inputStyle}
-    />
-  </div>
-);
-
 /* ---------- Styles ---------- */
 
 const headerStyle = {
@@ -137,7 +155,7 @@ const headerStyle = {
   justifyContent: "space-between",
   alignItems: "center",
   padding: "10px 20px",
-  background: "linear-gradient(90deg, #f7faffff, #fff5ffff)",
+  background: "linear-gradient(90deg, #f7faff, #fff5ff)",
   borderBottom: "1px solid #e5e7eb",
 };
 
@@ -156,24 +174,8 @@ const closeBtn = {
 
 const formStyle = {
   padding: "24px",
-  maxWidth: "480px",   // 👈 narrower than modal
+  maxWidth: "480px",
   margin: "0 -12px",
-};
-
-const labelStyle = {
-  fontSize: "14px",
-  fontWeight: 500,
-  color: "#374151",
-  marginBottom: "8px",
-  display: "block",
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: "10px 14px",
-  borderRadius: "10px",
-  border: "1px solid #d9d8d8ff",
-  fontSize: "14px",
 };
 
 const rowStyle = {
@@ -188,24 +190,4 @@ const footerStyle = {
   gap: "12px",
   paddingTop: "20px",
   borderTop: "1px solid #e5e7eb",
-};
-
-const cancelBtn = {
-  flex: 1,
-  padding: "10px",
-  borderRadius: "10px",
-  background: "#ffffff",
-  border: "1px solid #e5e7eb",
-  cursor: "pointer",
-};
-
-const primaryBtn = {
-  flex: 1,
-  padding: "10px",
-  borderRadius: "10px",
-  border: "none",
-  cursor: "pointer",
-  fontWeight: 600,
-  color: "#ffffff",
-  background: "linear-gradient(90deg, rgba(8, 19, 242, 0.85) 0%, rgba(180, 32, 254, 0.95) 100%)",
 };

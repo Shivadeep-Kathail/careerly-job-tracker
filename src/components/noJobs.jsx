@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { Briefcase } from "lucide-react";
+import Button from "./button";
 
 const NoJobs = ({ onAddJob }) => {
-  const [isHover, setIsHover] = useState(false);
-
   return (
     <div style={styles.container}>
       {/* Icon */}
@@ -18,22 +16,16 @@ const NoJobs = ({ onAddJob }) => {
         Keep all your opportunities organized in one place.
       </p>
 
-      <button
-        onClick={onAddJob}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        style={{
-          ...styles.button,
-          ...(isHover ? styles.buttonHover : {}),
-        }}
-      >
+      <Button onClick={onAddJob}>
         Add Your First Job
-      </button>
+      </Button>
     </div>
   );
 };
 
 export default NoJobs;
+
+/* ---------- Styles ---------- */
 
 const styles = {
   container: {
@@ -69,27 +61,5 @@ const styles = {
     fontSize: "17px",
     color: "#6b7280",
     lineHeight: 1.2,
-  },
-
-  button: {
-    background:
-      "linear-gradient(90deg, rgba(8,19,242,0.85), rgba(180,32,254,0.95))",
-    color: "#ffffff",
-    padding: "10px 18px",
-    border: "none",
-    borderRadius: "12px",
-    fontSize: "16px",
-    fontWeight: 500,
-    cursor: "pointer",
-    boxShadow: "0 8px 18px rgba(0,0,0,0.14)",
-    transform: "scale(1)",
-    transition: "all 0.15s ease",
-  },
-
-  buttonHover: {
-    background:
-      "linear-gradient(90deg, rgba(8,19,242,1), rgba(180,32,254,1))",
-    boxShadow: "0 10px 22px rgba(0,0,0,0.18)",
-    transform: "scale(1.03)",
   },
 };
