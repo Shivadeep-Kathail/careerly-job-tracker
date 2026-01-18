@@ -1,11 +1,11 @@
 import JobCard from "./jobCard";
 
 const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
+  // Icon is provided by column config to keep this component generic
   const Icon = column.icon;
 
   return (
     <div style={styles.column}>
-      {/* Header */}
       <div style={styles.header}>
         {Icon && <Icon size={18} color={column.color} />}
         <span style={styles.title}>{column.title}</span>
@@ -21,12 +21,9 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
         </span>
       </div>
 
-      {/* Content */}
       <div style={styles.content}>
         {jobs.length === 0 ? (
-          <div style={styles.empty}>
-            No jobs here yet
-          </div>
+          <div style={styles.empty}>No jobs here yet</div>
         ) : (
           jobs.map((job) => (
             <JobCard

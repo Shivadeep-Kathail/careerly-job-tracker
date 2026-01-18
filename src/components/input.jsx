@@ -5,15 +5,18 @@ const Input = ({
   placeholder = "",
   type = "text",
   required = false,
-  as = "input", // input | textarea | select
+  as = "input",
   children,
 }) => {
   return (
     <div style={{ marginBottom: "22px" }}>
       {label && (
         <label style={labelStyle}>
-          {label}{" "}
-          {required && <span style={{ color: "#ef4444", fontSize:"12px" }}>*</span>}
+          {label}
+          {/* Indicates required fields without handling validation */}
+          {required && (
+            <span style={{ color: "#ef4444", fontSize: "12px" }}>*</span>
+          )}
         </label>
       )}
 
@@ -49,8 +52,6 @@ const Input = ({
 };
 
 export default Input;
-
-/* ---------- Styles ---------- */
 
 const labelStyle = {
   fontSize: "16px",

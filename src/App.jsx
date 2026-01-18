@@ -2,12 +2,13 @@ import { useState } from "react";
 import useJobs from "./hooks/useJobs";
 import Board from "./components/board";
 import AppHeader from "./components/appHeader";
-import './App.css'
+import "./App.css";
 
 function App() {
   const { jobs, addJob, updateJob, deleteJob } = useJobs();
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
 
+  // Derived stats are computed here to keep child components stateless
   const stats = {
     total: jobs.length,
     interview: jobs.filter((j) => j.status === "interview").length,

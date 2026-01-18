@@ -4,8 +4,10 @@ const Modal = ({ isOpen, onClose, children }) => {
   useEffect(() => {
     if (!isOpen) return;
 
+    // Lock background scroll while modal is open
     document.body.style.overflow = "hidden";
 
+    // Enable Escape key to close the modal
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
     };
@@ -24,6 +26,7 @@ const Modal = ({ isOpen, onClose, children }) => {
     <div style={styles.overlay} onClick={onClose}>
       <div
         style={styles.modal}
+        // Prevent overlay click when interacting with modal content
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -39,7 +42,7 @@ const styles = {
     position: "fixed",
     inset: 0,
     background: "rgba(0,0,0,0.4)",
-    backdropFilter: "blur(6px)",
+    backdropFilter: "blur(8px)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

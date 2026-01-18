@@ -1,3 +1,4 @@
+// Sample seed data used for development, demos, and initial UI state
 export const initialJobs = [
   {
     id: "1",

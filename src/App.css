@@ -1,4 +1,4 @@
-/* Reset */
+/* Base reset to ensure full-height layouts work reliably */
 html,
 body,
 #root {
@@ -6,14 +6,13 @@ body,
   height: 100%;
 }
 
-/* App layout */
 .app-root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Gradient container */
+/* Background gradient applied only to the main content area */
 .app-main {
   flex: 1;
   background: linear-gradient(

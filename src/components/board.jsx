@@ -13,6 +13,7 @@ const Board = ({
   openModal,
   closeModal,
 }) => {
+  // Stores the job being edited; null means new job
   const [jobToEdit, setJobToEdit] = useState(null);
 
   const handleEditJob = (job) => {
@@ -25,7 +26,7 @@ const Board = ({
     setJobToEdit(null);
   };
 
-  // ✅ SAFE status update
+  // Updates only the status field for an existing job
   const updateJobStatus = (jobId, status) => {
     const job = jobs.find((j) => j.id === jobId);
     if (!job) return;
@@ -38,7 +39,6 @@ const Board = ({
 
   return (
     <>
-      {/* CONTENT */}
       {jobs.length === 0 ? (
         <NoJobs onAddJob={openModal} />
       ) : (
@@ -56,7 +56,6 @@ const Board = ({
         </div>
       )}
 
-      {/* MODAL */}
       <JobModal
         isOpen={isJobModalOpen}
         onClose={handleCloseModal}

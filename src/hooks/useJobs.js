@@ -3,19 +3,21 @@ import useLocalStorage from "./useLocalStorage";
 function useJobs() {
   const [jobs, setJobs] = useLocalStorage();
 
-  //CREATE
+  // Appends a new job entry without mutating existing state
   const addJob = (newjob) => {
     setJobs((prev) => [...prev, newjob]);
   };
 
-  //UPDATE
+  // Replaces a job by id while keeping the rest of the list intact
   const updateJob = (updatedJob) => {
     setJobs((prevJobs) =>
-      prevJobs.map((job) => (job.id === updatedJob.id ? updatedJob : job))
+      prevJobs.map((job) =>
+        job.id === updatedJob.id ? updatedJob : job
+      )
     );
   };
 
-  //DELETE
+  // Removes a job permanently by id
   const deleteJob = (id) => {
     setJobs((prev) => prev.filter((job) => job.id !== id));
   };

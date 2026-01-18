@@ -15,6 +15,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
   useEffect(() => {
     if (!isOpen) return;
 
+    // Fill form when editing, reset when creating
     if (jobToEdit) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setRole(jobToEdit.role);
@@ -35,6 +36,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
     }
   }, [jobToEdit, isOpen]);
 
+  // Prevents creating empty or unusable job cards
   const isFormValid = role.trim() && company.trim() && location.trim();
 
   const handleSubmit = (e) => {
@@ -59,15 +61,16 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      {/* Header */}
       <div style={headerStyle}>
         <h2 style={titleStyle}>
           {jobToEdit ? "Edit Job Application" : "Add Job Application"}
         </h2>
-        <button onClick={onClose} style={closeBtn}>✕</button>
+
+        <button onClick={onClose} style={closeBtn}>
+          ✕
+        </button>
       </div>
 
-      {/* Form */}
       <form onSubmit={handleSubmit} style={formStyle}>
         <Input
           label="Job Title"
@@ -131,7 +134,6 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
           placeholder="Add any additional notes or reminders..."
         />
 
-        {/* Footer */}
         <div style={footerStyle}>
           <Button variant="secondary" onClick={onClose} style={{ flex: 1 }}>
             Cancel
@@ -147,8 +149,6 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
 };
 
 export default JobModal;
-
-/* ---------- Styles ---------- */
 
 const headerStyle = {
   display: "flex",

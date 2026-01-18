@@ -18,8 +18,13 @@ const STATUS_OPTIONS = [
 ];
 
 const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
+  // Used to reveal inline actions
   const [hover, setHover] = useState(false);
+
+  // Controls the status dropdown
   const [open, setOpen] = useState(false);
+
+  // Detects outside clicks to close the dropdown
   const dropdownRef = useRef(null);
 
   const currentStatusLabel =
@@ -31,10 +36,12 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
         setOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  // Confirmation avoids accidental deletion
   const handleDelete = () => {
     if (
       window.confirm(
@@ -55,7 +62,6 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
         zIndex: open ? 50 : 1,
       }}
     >
-      {/* Header */}
       <div style={styles.cardHeader}>
         <div>
           <h3 style={styles.jobTitle}>{job.role}</h3>
@@ -91,7 +97,6 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
         )}
       </div>
 
-      {/* Job details */}
       <div style={styles.jobDetails}>
         <div style={styles.jobDetailRow}>
           <MapPin size={14} /> {job.location}
@@ -102,7 +107,6 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
         </div>
       </div>
 
-      {/* Status + External Link */}
       <div style={styles.cardFooter}>
         <div ref={dropdownRef} style={styles.statusWrapper}>
           <div
@@ -164,7 +168,6 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
         )}
       </div>
 
-      {/* Notes */}
       {job.notes?.trim() && (
         <>
           <div style={styles.notesDivider} />

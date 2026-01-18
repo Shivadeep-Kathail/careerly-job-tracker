@@ -4,7 +4,6 @@ import Button from "./button";
 const NoJobs = ({ onAddJob }) => {
   return (
     <div style={styles.container}>
-      {/* Icon */}
       <div style={styles.iconWrap}>
         <Briefcase size={32} strokeWidth={2.2} />
       </div>
@@ -24,8 +23,6 @@ const NoJobs = ({ onAddJob }) => {
 };
 
 export default NoJobs;
-
-/* ---------- Styles ---------- */
 
 const styles = {
   container: {

@@ -3,11 +3,11 @@ import { Bookmark } from "lucide-react";
 import Button from "./button";
 
 const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
+  // Used to decide whether stats should be visible
   const hasJobs = jobs.length > 0;
 
   return (
     <header style={styles.header}>
-      {/* LEFT */}
       <div style={styles.left}>
         <div style={styles.logoBox}>
           <Bookmark size={20} stroke="#fff" fill="#fff" strokeWidth={2.5} />
@@ -22,7 +22,6 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
         </div>
       </div>
 
-      {/* CENTER */}
       {hasJobs && (
         <div style={styles.statsBox}>
           <Stat label="Total" value={stats.total} />
@@ -33,7 +32,6 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
         </div>
       )}
 
-      {/* RIGHT */}
       <Button size="lg" onClick={onAddJob}>
         <span style={styles.plus}>+</span>
         Add Job
@@ -42,6 +40,7 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
   );
 };
 
+// Small visual separator between stats
 const Divider = () => <span style={styles.divider} />;
 
 export default AppHeader;
@@ -53,10 +52,13 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-between",
     padding: "0 28px",
+
     background:
       "linear-gradient(105deg, rgba(241, 238, 255, 0.94) 20%, rgba(251, 237, 249, 0.89) 80%)",
+
     borderBottom: "1px solid rgba(0,0,0,0.04)",
     boxShadow: "0 6px 12px -4px rgba(0, 0, 0, 0.15)",
+
     position: "sticky",
     top: 0,
     zIndex: 50,
@@ -73,6 +75,7 @@ const styles = {
     height: "44px",
     borderRadius: "12px",
     background: "linear-gradient(135deg, #5148f5, #ea33cc)",
+
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

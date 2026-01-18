@@ -9,17 +9,21 @@ const Button = ({
   disabled = false,
   style = {},
 }) => {
+  // Tracks hover state to control interaction styles
   const [hover, setHover] = useState(false);
 
+  // Styles that change based on variant and hover state
   const variantStyles = {
     primary: {
-      background: hover && !disabled
-        ? "linear-gradient(90deg, rgba(8,19,242,1), rgba(180,32,254,1))"
-        : "linear-gradient(90deg, rgba(8,19,242,0.85), rgba(180,32,254,0.95))",
+      background:
+        hover && !disabled
+          ? "linear-gradient(90deg, rgba(8,19,242,1), rgba(180,32,254,1))"
+          : "linear-gradient(90deg, rgba(8,19,242,0.85), rgba(180,32,254,0.95))",
       color: "#ffffff",
-      boxShadow: hover && !disabled
-        ? "0 10px 22px rgba(0,0,0,0.18)"
-        : "0 8px 18px rgba(0,0,0,0.14)",
+      boxShadow:
+        hover && !disabled
+          ? "0 10px 22px rgba(0,0,0,0.18)"
+          : "0 8px 18px rgba(0,0,0,0.14)",
       transform: hover && !disabled ? "scale(1.03)" : "scale(1)",
     },
 
@@ -53,8 +57,6 @@ const Button = ({
 };
 
 export default Button;
-
-/* ---------- STATIC STYLES ---------- */
 
 const baseStyle = {
   display: "inline-flex",
