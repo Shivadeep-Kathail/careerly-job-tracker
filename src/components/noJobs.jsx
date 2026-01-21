@@ -1,21 +1,50 @@
 import { Briefcase } from "lucide-react";
 import Button from "./button";
+import useIsMobile from "../hooks/useIsMobile";
 
 const NoJobs = ({ onAddJob }) => {
+  // Used to control mobile layout (< 850px)
+  const isMobile = useIsMobile(850);
+
   return (
-    <div style={styles.container}>
-      <div style={styles.iconWrap}>
-        <Briefcase size={32} strokeWidth={2.2} />
+    <div
+      style={{
+        ...styles.container,
+        minHeight: isMobile ? "60vh" : "70vh",
+        padding: isMobile ? "0 16px" : "0",
+      }}
+    >
+      <div
+        style={{
+          ...styles.iconWrap,
+          width: isMobile ? "64px" : "72px",
+          height: isMobile ? "64px" : "72px",
+        }}
+      >
+        <Briefcase size={isMobile ? 28 : 32} strokeWidth={2.2} />
       </div>
 
-      <h3 style={styles.title}>No applications yet</h3>
+      <h3
+        style={{
+          ...styles.title,
+          fontSize: isMobile ? "18px" : "20px",
+        }}
+      >
+        No applications yet
+      </h3>
 
-      <p style={styles.description}>
+      <p
+        style={{
+          ...styles.description,
+          fontSize: isMobile ? "15px" : "17px",
+          lineHeight: isMobile ? 1.4 : 1.2,
+        }}
+      >
         Start tracking your job applications by adding your first one.
         Keep all your opportunities organized in one place.
       </p>
 
-      <Button onClick={onAddJob}>
+      <Button size={isMobile ? "lg" : "md"} onClick={onAddJob}>
         Add Your First Job
       </Button>
     </div>
@@ -26,7 +55,6 @@ export default NoJobs;
 
 const styles = {
   container: {
-    minHeight: "70vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -36,8 +64,6 @@ const styles = {
   },
 
   iconWrap: {
-    width: "72px",
-    height: "72px",
     borderRadius: "15px",
     background: "linear-gradient(135deg, #4c4ff0, #9d42f1)",
     display: "flex",
@@ -49,14 +75,11 @@ const styles = {
 
   title: {
     margin: 0,
-    fontSize: "20px",
     fontWeight: 500,
   },
 
   description: {
     maxWidth: "420px",
-    fontSize: "17px",
     color: "#6b7280",
-    lineHeight: 1.2,
   },
 };

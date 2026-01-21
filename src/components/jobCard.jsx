@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { formatAppliedDate } from "../utilities/date";
+import useIsMobile from "../hooks/useIsMobile";
 import {
   Trash2,
   SquarePen,
@@ -18,19 +20,21 @@ const STATUS_OPTIONS = [
 ];
 
 const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
-  // Used to reveal inline actions
   const [hover, setHover] = useState(false);
-
-  // Controls the status dropdown
   const [open, setOpen] = useState(false);
 
-  // Detects outside clicks to close the dropdown
+  // Mobile breakpoint
+  const isMobile = useIsMobile(850);
+
   const dropdownRef = useRef(null);
 
   const currentStatusLabel =
     STATUS_OPTIONS.find((s) => s.key === job.status)?.label || job.status;
 
+  // Close desktop dropdown on outside click
   useEffect(() => {
+    if (isMobile) return;
+
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setOpen(false);
@@ -39,9 +43,8 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
 
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  }, [isMobile]);
 
-  // Confirmation avoids accidental deletion
   const handleDelete = () => {
     if (
       window.confirm(
@@ -52,133 +55,131 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
     }
   };
 
+  const showActions = isMobile || hover;
+
   return (
-    <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        ...styles.cardContainer,
-        ...(hover ? styles.cardHoverState : {}),
-        zIndex: open ? 50 : 1,
-      }}
-    >
-      <div style={styles.cardHeader}>
-        <div>
-          <h3 style={styles.jobTitle}>{job.role}</h3>
-          <p style={styles.companyName}>{job.company}</p>
-        </div>
-
-        {hover && (
-          <div style={styles.actionIcons}>
-            <SquarePen
-              size={18}
-              style={styles.iconBase}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "#2563eb")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "#9ca3af")
-              }
-              onClick={() => onEdit(job)}
-            />
-
-            <Trash2
-              size={18}
-              style={styles.iconBase}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "#ef4444")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "#9ca3af")
-              }
-              onClick={handleDelete}
-            />
-          </div>
-        )}
-      </div>
-
-      <div style={styles.jobDetails}>
-        <div style={styles.jobDetailRow}>
-          <MapPin size={14} /> {job.location}
-        </div>
-        <div style={styles.jobDetailRow}>
-          <Calendar size={14} /> Applied on{" "}
-          {formatAppliedDate(job.appliedDate)}
-        </div>
-      </div>
-
-      <div style={styles.cardFooter}>
-        <div ref={dropdownRef} style={styles.statusWrapper}>
-          <div
-            onClick={() => setOpen((v) => !v)}
-            style={{
-              ...styles.statusPill,
-              background: column.bg,
-              color: column.color,
-              transform: open ? "scale(1.04)" : "scale(1)",
-            }}
-          >
-            {currentStatusLabel}
-            <ChevronDown
-              size={14}
-              style={{
-                transform: open ? "rotate(180deg)" : "rotate(0deg)",
-                transition: "transform 0.25s ease",
-              }}
-            />
+    <>
+      <div
+        onMouseEnter={() => !isMobile && setHover(true)}
+        onMouseLeave={() => !isMobile && setHover(false)}
+        style={{
+          ...styles.cardContainer,
+          ...(hover && !isMobile ? styles.cardHoverState : {}),
+        }}
+      >
+        <div style={styles.cardHeader}>
+          <div>
+            <h3 style={styles.jobTitle}>{job.role}</h3>
+            <p style={styles.companyName}>{job.company}</p>
           </div>
 
-          {open && (
-            <div style={styles.statusDropdown}>
-              {STATUS_OPTIONS.map((s) => (
-                <div
-                  key={s.key}
-                  onClick={() => {
-                    onStatusChange(job.id, s.key);
-                    setOpen(false);
-                  }}
-                  style={styles.statusOption}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#2563eb")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
-                >
-                  {job.status === s.key && "✓ "} {s.label}
-                </div>
-              ))}
+          {showActions && (
+            <div style={styles.actionIcons}>
+              <SquarePen
+                size={18}
+                style={styles.iconBase}
+                onClick={() => onEdit(job)}
+              />
+              <Trash2
+                size={18}
+                style={styles.iconBase}
+                onClick={handleDelete}
+              />
             </div>
           )}
         </div>
 
-        {job.link && (
-          <a href={job.link} target="_blank" rel="noreferrer">
-            <ExternalLink
-              size={18}
-              style={styles.iconBase}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "#525457")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "#9ca3af")
-              }
-            />
-          </a>
+        <div style={styles.jobDetails}>
+          <div style={styles.jobDetailRow}>
+            <MapPin size={14} /> {job.location}
+          </div>
+          <div style={styles.jobDetailRow}>
+            <Calendar size={14} /> Applied on{" "}
+            {formatAppliedDate(job.appliedDate)}
+          </div>
+        </div>
+
+        <div style={styles.cardFooter}>
+          <div ref={dropdownRef} style={styles.statusWrapper}>
+            <div
+              onClick={() => setOpen(true)}
+              style={{
+                ...styles.statusPill,
+                background: column.bg,
+                color: column.color,
+              }}
+            >
+              {currentStatusLabel}
+              <ChevronDown size={14} />
+            </div>
+
+            {/* DESKTOP dropdown */}
+            {open && !isMobile && (
+              <div style={styles.statusDropdown}>
+                {STATUS_OPTIONS.map((s) => (
+                  <div
+                    key={s.key}
+                    style={styles.statusOption}
+                    onClick={() => {
+                      onStatusChange(job.id, s.key);
+                      setOpen(false);
+                    }}
+                  >
+                    {job.status === s.key && "✓ "} {s.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {job.link && (
+            <a href={job.link} target="_blank" rel="noreferrer">
+              <ExternalLink size={18} style={styles.iconBase} />
+            </a>
+          )}
+        </div>
+
+        {job.notes?.trim() && (
+          <>
+            <div style={styles.notesDivider} />
+            <em style={styles.notesText}>{job.notes}</em>
+          </>
         )}
       </div>
 
-      {job.notes?.trim() && (
-        <>
-          <div style={styles.notesDivider} />
-          <em style={styles.notesText}>{job.notes}</em>
-        </>
-      )}
-    </div>
+      {/* MOBILE bottom sheet (PORTAL) */}
+      {open &&
+        isMobile &&
+        createPortal(
+          <div style={styles.sheetOverlay} onClick={() => setOpen(false)}>
+            <div
+              style={styles.sheet}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {STATUS_OPTIONS.map((s) => (
+                <div
+                  key={s.key}
+                  style={styles.sheetOption}
+                  onClick={() => {
+                    onStatusChange(job.id, s.key);
+                    setOpen(false);
+                  }}
+                >
+                  {s.label}
+                  {job.status === s.key && " ✓"}
+                </div>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
 export default JobCard;
+
+/* ================== STYLES ================== */
 
 const styles = {
   cardContainer: {
@@ -187,7 +188,6 @@ const styles = {
     padding: "20px",
     border: "1px solid #e5e7eb",
     boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
-    transform: "translateY(0)",
     transition: "all 0.25s cubic-bezier(0.4,0,0.2,1)",
     position: "relative",
   },
@@ -259,7 +259,6 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "6px",
-    transition: "all 0.2s ease",
   },
 
   statusDropdown: {
@@ -274,7 +273,7 @@ const styles = {
   },
 
   statusOption: {
-    padding: "6px 12px",
+    padding: "8px 12px",
     borderRadius: "10px",
     cursor: "pointer",
     color: "#ffffff",
@@ -290,5 +289,31 @@ const styles = {
     fontSize: "14px",
     color: "#6b7280",
     lineHeight: 1.6,
+  },
+
+  /* ===== MOBILE SHEET ===== */
+
+  sheetOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.4)",
+    zIndex: 3000,
+    display: "flex",
+    alignItems: "flex-end",
+  },
+
+  sheet: {
+    width: "100%",
+    background: "#ffffff",
+    borderRadius: "20px 20px 0 0",
+    padding: "16px",
+    boxShadow: "0 -10px 30px rgba(0,0,0,0.25)",
+  },
+
+  sheetOption: {
+    padding: "16px",
+    fontSize: "16px",
+    borderBottom: "1px solid #e5e7eb",
+    cursor: "pointer",
   },
 };

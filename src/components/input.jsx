@@ -1,3 +1,5 @@
+import useIsMobile from "../hooks/useIsMobile";
+
 const Input = ({
   label,
   value,
@@ -8,6 +10,9 @@ const Input = ({
   as = "input",
   children,
 }) => {
+  // Used to control mobile input sizing (< 850px)
+  const isMobile = useIsMobile(850);
+
   return (
     <div style={{ marginBottom: "22px" }}>
       {label && (
@@ -26,14 +31,22 @@ const Input = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
-          style={{ ...inputStyle, height: "120px", resize: "none" }}
+          style={{
+            ...inputStyle,
+            height: "120px",
+            resize: "none",
+            fontSize: isMobile ? "16px" : "14px",
+          }}
           maxLength={50}
         />
       ) : as === "select" ? (
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            fontSize: isMobile ? "16px" : "14px",
+          }}
         >
           {children}
         </select>
@@ -44,7 +57,10 @@ const Input = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            fontSize: isMobile ? "16px" : "14px",
+          }}
         />
       )}
     </div>
@@ -63,8 +79,8 @@ const labelStyle = {
 
 const inputStyle = {
   width: "100%",
-  padding: "10px 14px",
+  padding: "12px 14px",
   borderRadius: "10px",
   border: "1px solid #d9d8d8",
-  fontSize: "14px",
+  outline: "none",
 };

@@ -8,7 +8,6 @@ function App() {
   const { jobs, addJob, updateJob, deleteJob } = useJobs();
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
 
-  // Derived stats are computed here to keep child components stateless
   const stats = {
     total: jobs.length,
     interview: jobs.filter((j) => j.status === "interview").length,

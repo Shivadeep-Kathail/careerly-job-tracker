@@ -4,17 +4,21 @@ body,
 #root {
   margin: 0;
   height: 100%;
+  overflow-x: hidden; /* 🔒 HARD LOCK */
 }
 
 .app-root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden; /* 🔒 SAFETY */
 }
 
 /* Background gradient applied only to the main content area */
 .app-main {
   flex: 1;
+  max-width: 100%;
+  overflow-x: hidden; /* 🔒 FINAL GUARD */
   background: linear-gradient(
     135deg,
     rgba(236, 238, 255, 0.94) 0%,

@@ -1,28 +1,46 @@
 import Stat from "./stats";
 import { Bookmark } from "lucide-react";
 import Button from "./button";
+import useIsMobile from "../hooks/useIsMobile";
 
 const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
   // Used to decide whether stats should be visible
   const hasJobs = jobs.length > 0;
 
+  // Used to control mobile layout (< 850px)
+  const isMobile = useIsMobile(850);
+
   return (
-    <header style={styles.header}>
+    <header
+      style={{
+        ...styles.header,
+        padding: isMobile ? "0 16px" : "0 28px",
+      }}
+    >
       <div style={styles.left}>
-        <div style={styles.logoBox}>
+        <div
+          style={{
+            ...styles.logoBox,
+            width: isMobile ? "40px" : "44px",
+            height: isMobile ? "40px" : "44px",
+          }}
+        >
           <Bookmark size={20} stroke="#fff" fill="#fff" strokeWidth={2.5} />
           <span style={styles.greenDot} />
         </div>
 
         <div>
           <p style={styles.title}>Careerly</p>
-          <p style={styles.subtitle}>
-            Track your job applications effortlessly
-          </p>
+
+          {!isMobile && (
+            <p style={styles.subtitle}>
+              Track your job applications effortlessly
+            </p>
+          )}
         </div>
       </div>
 
-      {hasJobs && (
+      {hasJobs && !isMobile && (
         <div style={styles.statsBox}>
           <Stat label="Total" value={stats.total} />
           <Divider />
@@ -32,7 +50,7 @@ const AppHeader = ({ onAddJob, stats, jobs = [] }) => {
         </div>
       )}
 
-      <Button size="lg" onClick={onAddJob}>
+      <Button size={isMobile ? "md" : "lg"} onClick={onAddJob}>
         <span style={styles.plus}>+</span>
         Add Job
       </Button>
@@ -51,7 +69,6 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "0 28px",
 
     background:
       "linear-gradient(105deg, rgba(241, 238, 255, 0.94) 20%, rgba(251, 237, 249, 0.89) 80%)",
@@ -71,8 +88,6 @@ const styles = {
   },
 
   logoBox: {
-    width: "44px",
-    height: "44px",
     borderRadius: "12px",
     background: "linear-gradient(135deg, #5148f5, #ea33cc)",
 

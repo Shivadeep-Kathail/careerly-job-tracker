@@ -3,6 +3,7 @@ import Column from "./column";
 import JobModal from "./jobModal";
 import NoJobs from "./noJobs";
 import { COLUMNS } from "../data/columns";
+import useIsMobile from "../hooks/useIsMobile";
 
 const Board = ({
   jobs,
@@ -15,6 +16,9 @@ const Board = ({
 }) => {
   // Stores the job being edited; null means new job
   const [jobToEdit, setJobToEdit] = useState(null);
+
+  // Used to control mobile layout (< 850px)
+  const isMobile = useIsMobile(850);
 
   const handleEditJob = (job) => {
     setJobToEdit(job);
@@ -42,7 +46,15 @@ const Board = ({
       {jobs.length === 0 ? (
         <NoJobs onAddJob={openModal} />
       ) : (
-        <div style={styles.board}>
+        <div
+          style={{
+            ...styles.board,
+            flexDirection: isMobile ? "column" : "row",
+            padding: isMobile ? "16px" : "24px",
+            maxWidth: "100%",
+            boxSizing: "border-box",
+          }}
+        >
           {COLUMNS.map((column) => (
             <Column
               key={column.id}
@@ -73,7 +85,6 @@ const styles = {
   board: {
     display: "flex",
     gap: "16px",
-    padding: "24px",
-    alignItems: "flex-start",
+    alignItems: "stretch",
   },
 };

@@ -12,23 +12,30 @@ const Button = ({
   // Tracks hover state to control interaction styles
   const [hover, setHover] = useState(false);
 
+  // Used to avoid hover styles on touch devices
+  const isTouchDevice =
+    typeof window !== "undefined" &&
+    ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+
   // Styles that change based on variant and hover state
   const variantStyles = {
     primary: {
       background:
-        hover && !disabled
+        hover && !disabled && !isTouchDevice
           ? "linear-gradient(90deg, rgba(8,19,242,1), rgba(180,32,254,1))"
           : "linear-gradient(90deg, rgba(8,19,242,0.85), rgba(180,32,254,0.95))",
       color: "#ffffff",
       boxShadow:
-        hover && !disabled
+        hover && !disabled && !isTouchDevice
           ? "0 10px 22px rgba(0,0,0,0.18)"
           : "0 8px 18px rgba(0,0,0,0.14)",
-      transform: hover && !disabled ? "scale(1.03)" : "scale(1)",
+      transform:
+        hover && !disabled && !isTouchDevice ? "scale(1.03)" : "scale(1)",
     },
 
     secondary: {
-      background: hover && !disabled ? "#f9fafb" : "#ffffff",
+      background:
+        hover && !disabled && !isTouchDevice ? "#f9fafb" : "#ffffff",
       color: "#111827",
       border: "1px solid #e5e7eb",
     },
@@ -39,8 +46,8 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      onMouseEnter={() => !disabled && setHover(true)}
-      onMouseLeave={() => !disabled && setHover(false)}
+      onMouseEnter={() => !disabled && !isTouchDevice && setHover(true)}
+      onMouseLeave={() => !disabled && !isTouchDevice && setHover(false)}
       style={{
         ...baseStyle,
         ...sizeStyles[size],
