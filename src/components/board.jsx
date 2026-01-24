@@ -14,10 +14,7 @@ const Board = ({
   openModal,
   closeModal,
 }) => {
-  // Stores the job being edited; null means new job
   const [jobToEdit, setJobToEdit] = useState(null);
-
-  // Used to control mobile layout (< 850px)
   const isMobile = useIsMobile(850);
 
   const handleEditJob = (job) => {
@@ -30,15 +27,10 @@ const Board = ({
     setJobToEdit(null);
   };
 
-  // Updates only the status field for an existing job
   const updateJobStatus = (jobId, status) => {
     const job = jobs.find((j) => j.id === jobId);
     if (!job) return;
-
-    updateJob({
-      ...job,
-      status,
-    });
+    updateJob({ ...job, status });
   };
 
   return (
@@ -46,15 +38,7 @@ const Board = ({
       {jobs.length === 0 ? (
         <NoJobs onAddJob={openModal} />
       ) : (
-        <div
-          style={{
-            ...styles.board,
-            flexDirection: isMobile ? "column" : "row",
-            padding: isMobile ? "16px" : "24px",
-            maxWidth: "100%",
-            boxSizing: "border-box",
-          }}
-        >
+        <div style={isMobile ? mobileBoard : desktopBoard}>
           {COLUMNS.map((column) => (
             <Column
               key={column.id}
@@ -81,10 +65,23 @@ const Board = ({
 
 export default Board;
 
-const styles = {
-  board: {
-    display: "flex",
-    gap: "16px",
-    alignItems: "stretch",
-  },
+/* ================= STYLES ================= */
+
+const desktopBoard = {
+  display: "grid",
+  gridTemplateColumns: "repeat(5, 270px)",
+  gap: "20px",
+  padding: "24px",
+  justifyContent: "center",
+  alignItems: "flex-start",
+  maxWidth: "100%",
+  boxSizing: "border-box",
+};
+
+
+const mobileBoard = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+  padding: "16px",
 };

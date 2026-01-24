@@ -2,10 +2,7 @@ import JobCard from "./jobCard";
 import useIsMobile from "../hooks/useIsMobile";
 
 const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
-  // Icon is provided by column config to keep this component generic
   const Icon = column.icon;
-
-  // Used to control mobile layout (< 850px)
   const isMobile = useIsMobile(850);
 
   return (
@@ -62,6 +59,8 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+    position: "relative",
+    overflow: "visible",
   },
 
   header: {
@@ -88,6 +87,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "12px",
+    overflow: "visible",
   },
 
   empty: {

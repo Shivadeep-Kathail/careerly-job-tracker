@@ -21,23 +21,22 @@ const STATUS_OPTIONS = [
 
 const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
   const [hover, setHover] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [desktopOpen, setDesktopOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Mobile breakpoint
   const isMobile = useIsMobile(850);
-
   const dropdownRef = useRef(null);
 
   const currentStatusLabel =
     STATUS_OPTIONS.find((s) => s.key === job.status)?.label || job.status;
 
-  // Close desktop dropdown on outside click
+  /* Close dropdown on outside click (desktop only) */
   useEffect(() => {
     if (isMobile) return;
 
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
+        setDesktopOpen(false);
       }
     };
 
@@ -63,66 +62,65 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
         onMouseEnter={() => !isMobile && setHover(true)}
         onMouseLeave={() => !isMobile && setHover(false)}
         style={{
-          ...styles.cardContainer,
-          ...(hover && !isMobile ? styles.cardHoverState : {}),
+          ...styles.card,
+          ...(hover && !isMobile ? styles.cardHover : {}),
         }}
       >
-        <div style={styles.cardHeader}>
+        {/* HEADER */}
+        <div style={styles.header}>
           <div>
-            <h3 style={styles.jobTitle}>{job.role}</h3>
-            <p style={styles.companyName}>{job.company}</p>
+            <h3 style={styles.role}>{job.role}</h3>
+            <p style={styles.company}>{job.company}</p>
           </div>
 
           {showActions && (
-            <div style={styles.actionIcons}>
-              <SquarePen
-                size={18}
-                style={styles.iconBase}
-                onClick={() => onEdit(job)}
-              />
-              <Trash2
-                size={18}
-                style={styles.iconBase}
-                onClick={handleDelete}
-              />
+            <div style={styles.actions}>
+              <SquarePen size={18} onClick={() => onEdit(job)} />
+              <Trash2 size={18} onClick={handleDelete} />
             </div>
           )}
         </div>
 
-        <div style={styles.jobDetails}>
-          <div style={styles.jobDetailRow}>
+        {/* DETAILS */}
+        <div style={styles.details}>
+          <div>
             <MapPin size={14} /> {job.location}
           </div>
-          <div style={styles.jobDetailRow}>
-            <Calendar size={14} /> Applied on{" "}
-            {formatAppliedDate(job.appliedDate)}
+          <div>
+            <Calendar size={14} /> {formatAppliedDate(job.appliedDate)}
           </div>
         </div>
 
-        <div style={styles.cardFooter}>
+        {/* FOOTER */}
+        <div style={styles.footer}>
+          {/* STATUS WRAPPER (IMPORTANT) */}
           <div ref={dropdownRef} style={styles.statusWrapper}>
             <div
-              onClick={() => setOpen(true)}
               style={{
-                ...styles.statusPill,
+                ...styles.status,
                 background: column.bg,
                 color: column.color,
               }}
+              onClick={() =>
+                isMobile
+                  ? setMobileOpen(true)
+                  : setDesktopOpen((v) => !v)
+              }
             >
               {currentStatusLabel}
               <ChevronDown size={14} />
             </div>
 
-            {/* DESKTOP dropdown */}
-            {open && !isMobile && (
-              <div style={styles.statusDropdown}>
+            {/* DESKTOP DROPDOWN */}
+            {desktopOpen && !isMobile && (
+              <div style={styles.dropdown}>
                 {STATUS_OPTIONS.map((s) => (
                   <div
                     key={s.key}
-                    style={styles.statusOption}
+                    style={styles.option}
                     onClick={() => {
                       onStatusChange(job.id, s.key);
-                      setOpen(false);
+                      setDesktopOpen(false);
                     }}
                   >
                     {job.status === s.key && "✓ "} {s.label}
@@ -134,24 +132,20 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
 
           {job.link && (
             <a href={job.link} target="_blank" rel="noreferrer">
-              <ExternalLink size={18} style={styles.iconBase} />
+              <ExternalLink size={18} />
             </a>
           )}
         </div>
-
-        {job.notes?.trim() && (
-          <>
-            <div style={styles.notesDivider} />
-            <em style={styles.notesText}>{job.notes}</em>
-          </>
-        )}
       </div>
 
-      {/* MOBILE bottom sheet (PORTAL) */}
-      {open &&
+      {/* MOBILE BOTTOM SHEET */}
+      {mobileOpen &&
         isMobile &&
         createPortal(
-          <div style={styles.sheetOverlay} onClick={() => setOpen(false)}>
+          <div
+            style={styles.sheetOverlay}
+            onClick={() => setMobileOpen(false)}
+          >
             <div
               style={styles.sheet}
               onClick={(e) => e.stopPropagation()}
@@ -162,7 +156,7 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
                   style={styles.sheetOption}
                   onClick={() => {
                     onStatusChange(job.id, s.key);
-                    setOpen(false);
+                    setMobileOpen(false);
                   }}
                 >
                   {s.label}
@@ -179,53 +173,38 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
 
 export default JobCard;
 
-/* ================== STYLES ================== */
+/* ================= STYLES ================= */
 
 const styles = {
-  cardContainer: {
-    background: "#ffffff",
+  card: {
+    background: "#fff",
     borderRadius: "20px",
     padding: "20px",
     border: "1px solid #e5e7eb",
     boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
-    transition: "all 0.25s cubic-bezier(0.4,0,0.2,1)",
+    transition: "0.25s",
     position: "relative",
+    zIndex: 1,
   },
 
-  cardHoverState: {
-    border: "1px solid #52b7ff",
+  cardHover: {
     transform: "translateY(-4px)",
     boxShadow: "0 18px 40px rgba(0,0,0,0.12)",
+    border:"1px solid rgba(155, 95, 215, 0.75)",
+    zIndex: 10,
   },
 
-  cardHeader: {
+  header: {
     display: "flex",
     justifyContent: "space-between",
   },
 
-  jobTitle: {
-    margin: 0,
-    fontSize: "22px",
-    fontWeight: 500,
-  },
+  role: { margin: 0, fontSize: "22px" },
+  company: { marginTop: "6px", color: "#374151" },
 
-  companyName: {
-    marginTop: "6px",
-    fontSize: "16px",
-    color: "#374151",
-  },
+  actions: { display: "flex", gap: "12px", cursor: "pointer" },
 
-  actionIcons: {
-    display: "flex",
-    gap: "12px",
-  },
-
-  iconBase: {
-    color: "#9ca3af",
-    cursor: "pointer",
-  },
-
-  jobDetails: {
+  details: {
     marginTop: "12px",
     fontSize: "14px",
     color: "#6b7280",
@@ -234,85 +213,66 @@ const styles = {
     gap: "8px",
   },
 
-  jobDetailRow: {
-    display: "flex",
-    gap: "8px",
-    alignItems: "center",
-  },
-
-  cardFooter: {
+  footer: {
     marginTop: "16px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
   },
 
+  /* 🔥 CRITICAL */
   statusWrapper: {
     position: "relative",
+    zIndex: 20,
   },
 
-  statusPill: {
+  status: {
     padding: "8px 16px",
     borderRadius: "12px",
-    fontWeight: 550,
     cursor: "pointer",
     display: "flex",
-    alignItems: "center",
     gap: "6px",
+    alignItems: "center",
   },
 
-  statusDropdown: {
+  dropdown: {
     position: "absolute",
     top: "44px",
     left: 0,
-    width: "160px",
+    minWidth: "160px",
     background: "#4b4b50",
-    borderRadius: "16px",
+    borderRadius: "12px",
     padding: "6px",
-    zIndex: 100,
+    color: "#fff",
+    zIndex: 30,
   },
 
-  statusOption: {
+  option: {
     padding: "8px 12px",
-    borderRadius: "10px",
     cursor: "pointer",
-    color: "#ffffff",
+    borderRadius: "8px",
   },
 
-  notesDivider: {
-    height: "1px",
-    background: "#e5e7eb",
-    margin: "16px 0",
-  },
-
-  notesText: {
-    fontSize: "14px",
-    color: "#6b7280",
-    lineHeight: 1.6,
-  },
-
-  /* ===== MOBILE SHEET ===== */
+  /* MOBILE SHEET */
 
   sheetOverlay: {
     position: "fixed",
     inset: 0,
     background: "rgba(0,0,0,0.4)",
-    zIndex: 3000,
     display: "flex",
     alignItems: "flex-end",
+    zIndex: 3000,
   },
 
   sheet: {
     width: "100%",
-    background: "#ffffff",
+    background: "#fff",
     borderRadius: "20px 20px 0 0",
     padding: "16px",
-    boxShadow: "0 -10px 30px rgba(0,0,0,0.25)",
   },
 
   sheetOption: {
     padding: "16px",
-    fontSize: "16px",
     borderBottom: "1px solid #e5e7eb",
     cursor: "pointer",
   },

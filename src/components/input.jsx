@@ -10,17 +10,15 @@ const Input = ({
   as = "input",
   children,
 }) => {
-  // Used to control mobile input sizing (< 850px)
   const isMobile = useIsMobile(850);
 
   return (
-    <div style={{ marginBottom: "22px" }}>
+    <div style={wrapperStyle}>
       {label && (
         <label style={labelStyle}>
           {label}
-          {/* Indicates required fields without handling validation */}
           {required && (
-            <span style={{ color: "#ef4444", fontSize: "12px" }}>*</span>
+            <span style={{ color: "#ef4444", fontSize: "12px" }}> *</span>
           )}
         </label>
       )}
@@ -31,13 +29,13 @@ const Input = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
+          maxLength={50}
           style={{
             ...inputStyle,
-            height: "120px",
+            height: "75px",
             resize: "none",
             fontSize: isMobile ? "16px" : "14px",
           }}
-          maxLength={50}
         />
       ) : as === "select" ? (
         <select
@@ -69,6 +67,13 @@ const Input = ({
 
 export default Input;
 
+/* ================= STYLES ================= */
+
+const wrapperStyle = {
+  marginBottom: "22px",
+  paddingInline: "0px", 
+};
+
 const labelStyle = {
   fontSize: "16px",
   fontWeight: 500,
@@ -79,8 +84,8 @@ const labelStyle = {
 
 const inputStyle = {
   width: "100%",
-  padding: "12px 14px",
+  padding: "10px 12px",
   borderRadius: "10px",
   border: "1px solid #d9d8d8",
-  outline: "none",
+  boxSizing: "border-box", 
 };

@@ -35,7 +35,8 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
     }
   }, [jobToEdit, isOpen]);
 
-  const isFormValid = role.trim() && company.trim() && location.trim();
+  const isFormValid =
+    role.trim() && company.trim() && location.trim();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,70 +58,121 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
     onClose();
   };
 
+  const isMobile = window.innerWidth < 640;
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
+      {/* Header */}
       <div style={headerStyle}>
         <h2 style={titleStyle}>
           {jobToEdit ? "Edit Job Application" : "Add Job Application"}
         </h2>
-
         <button onClick={onClose} style={closeBtn}>✕</button>
       </div>
 
-      {/* 🔑 NO maxHeight / overflow here */}
-      <form onSubmit={handleSubmit} style={formStyle}>
-        <Input label="Job Title" required value={role} onChange={setRole} />
-        <Input label="Company Name" required value={company} onChange={setCompany} />
-        <Input label="Location" required value={location} onChange={setLocation} />
-        <Input label="Application Link" type="url" value={link} onChange={setLink} />
+      {/* BODY (scroll + padding live here) */}
+      <div style={bodyStyle}>
+        <form onSubmit={handleSubmit} style={formStyle}>
+          <Input
+            label="Job Title"
+            required
+            value={role}
+            onChange={setRole}
+            placeholder="e.g., Software Engineer Intern"
+          />
 
-        <Input label="Application Date" type="date" value={date} onChange={setDate} />
+          <Input
+            label="Company Name"
+            required
+            value={company}
+            onChange={setCompany}
+            placeholder="e.g., Google"
+          />
 
-        <Input label="Status" as="select" value={status} onChange={setStatus}>
-          <option value="wishlist">Saved</option>
-          <option value="applied">Applied</option>
-          <option value="interview">Interview</option>
-          <option value="offer">Offer</option>
-          <option value="rejected">Rejected</option>
-        </Input>
+          <Input
+            label="Location"
+            required
+            value={location}
+            onChange={setLocation}
+            placeholder="e.g., San Francisco, CA"
+          />
 
-        <Input
-          label="Notes"
-          as="textarea"
-          value={notes}
-          onChange={setNotes}
-          placeholder="Add any additional notes or reminders..."
-        />
+          <Input
+            label="Application Link"
+            type="url"
+            value={link}
+            onChange={setLink}
+            placeholder="https://..."
+          />
 
-        <div style={footerStyle}>
-          <Button variant="secondary" onClick={onClose} style={{ flex: 1 }}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={!isFormValid} style={{ flex: 1 }}>
-            {jobToEdit ? "Save Changes" : "Add Job"}
-          </Button>
-        </div>
-      </form>
+          {/* Date + Status */}
+          <div
+            style={{
+              ...rowStyle,
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            }}
+          >
+            <Input
+              label="Application Date"
+              type="date"
+              value={date}
+              onChange={setDate}
+            />
+
+            <Input
+              label="Status"
+              as="select"
+              value={status}
+              onChange={setStatus}
+            >
+              <option value="wishlist">Wishlist</option>
+              <option value="applied">Applied</option>
+              <option value="interview">Interview</option>
+              <option value="offer">Offer</option>
+              <option value="rejected">Rejected</option>
+            </Input>
+          </div>
+
+          <Input
+            label="Notes"
+            as="textarea"
+            value={notes}
+            onChange={setNotes}
+            placeholder="Add any additional notes or reminders..."
+          />
+
+          {/* Footer */}
+          <div style={footerStyle}>
+            <Button variant="secondary" onClick={onClose} style={{ flex: 1 }}>
+              Cancel
+            </Button>
+
+            <Button type="submit" disabled={!isFormValid} style={{ flex: 1 }}>
+              {jobToEdit ? "Save Changes" : "Add Job"}
+            </Button>
+          </div>
+        </form>
+      </div>
     </Modal>
   );
 };
 
 export default JobModal;
 
-/* ===== styles ===== */
+/* ================= STYLES ================= */
 
 const headerStyle = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "16px 20px",
-  background: "linear-gradient(90deg, #f7faff, #fff5ff)",
+  padding: "18px 24px",
+  background: "linear-gradient(90deg, #f7faff 0%, #fff5ff 100%)",
   borderBottom: "1px solid #e5e7eb",
 };
 
 const titleStyle = {
-  fontSize: "20px",
-  fontWeight: 550,
+  fontSize: "22px",
+  fontWeight: 600,
   margin: 0,
 };
 
@@ -130,11 +182,25 @@ const closeBtn = {
   fontSize: "22px",
   cursor: "pointer",
   color: "#6b7280",
-  padding: "8px",
+};
+
+/* 🔥 THIS FIXES BOTH ISSUES */
+const bodyStyle = {
+  padding: "20px",
+  maxHeight: "90vh",
+  overflowY: "auto",
+  boxSizing: "border-box",
 };
 
 const formStyle = {
-  padding: "24px",
+  display: "flex",
+  flexDirection: "column",
+};
+
+const rowStyle = {
+  display: "grid",
+  gap: "16px",
+  marginBottom: "8px",
 };
 
 const footerStyle = {
