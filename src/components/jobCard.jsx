@@ -21,16 +21,18 @@ const STATUS_OPTIONS = [
 
 const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
   const [hover, setHover] = useState(false);
+  const [hoveredAction, setHoveredAction] = useState(null);
   const [desktopOpen, setDesktopOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isMobile = useIsMobile(850);
   const dropdownRef = useRef(null);
 
+  const hasNotes = Boolean(job.notes?.trim());
+
   const currentStatusLabel =
     STATUS_OPTIONS.find((s) => s.key === job.status)?.label || job.status;
 
-  /* Close dropdown on outside click (desktop only) */
   useEffect(() => {
     if (isMobile) return;
 
@@ -75,8 +77,33 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
 
           {showActions && (
             <div style={styles.actions}>
-              <SquarePen size={18} onClick={() => onEdit(job)} />
-              <Trash2 size={18} onClick={handleDelete} />
+              <SquarePen
+                size={18}
+                style={{
+                  ...styles.actionIcon,
+                  ...(hoveredAction === "edit" ? styles.editHover : {}),
+                }}
+                onMouseEnter={() => setHoveredAction("edit")}
+                onMouseLeave={() => setHoveredAction(null)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(job);
+                }}
+              />
+
+              <Trash2
+                size={18}
+                style={{
+                  ...styles.actionIcon,
+                  ...(hoveredAction === "delete" ? styles.deleteHover : {}),
+                }}
+                onMouseEnter={() => setHoveredAction("delete")}
+                onMouseLeave={() => setHoveredAction(null)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete();
+                }}
+              />
             </div>
           )}
         </div>
@@ -93,7 +120,6 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
 
         {/* FOOTER */}
         <div style={styles.footer}>
-          {/* STATUS WRAPPER (IMPORTANT) */}
           <div ref={dropdownRef} style={styles.statusWrapper}>
             <div
               style={{
@@ -111,7 +137,6 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
               <ChevronDown size={14} />
             </div>
 
-            {/* DESKTOP DROPDOWN */}
             {desktopOpen && !isMobile && (
               <div style={styles.dropdown}>
                 {STATUS_OPTIONS.map((s) => (
@@ -131,11 +156,23 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
           </div>
 
           {job.link && (
-            <a href={job.link} target="_blank" rel="noreferrer">
+            <a
+              href={job.link}
+              target="_blank"
+              rel="noreferrer"
+              style={styles.externalLink}
+            >
               <ExternalLink size={18} />
             </a>
           )}
         </div>
+
+        {/* NOTES */}
+        {hasNotes && (
+          <div style={styles.notesWrapper}>
+            <em style={styles.notes}>{job.notes}</em>
+          </div>
+        )}
       </div>
 
       {/* MOBILE BOTTOM SHEET */}
@@ -190,7 +227,7 @@ const styles = {
   cardHover: {
     transform: "translateY(-4px)",
     boxShadow: "0 18px 40px rgba(0,0,0,0.12)",
-    border:"1px solid rgba(155, 95, 215, 0.75)",
+    border: "1px solid rgba(50, 170, 235, 0.7)",
     zIndex: 10,
   },
 
@@ -203,6 +240,19 @@ const styles = {
   company: { marginTop: "6px", color: "#374151" },
 
   actions: { display: "flex", gap: "12px", cursor: "pointer" },
+
+  actionIcon: {
+    color: "#6b7280",
+    transition: "color 0.2s ease",
+  },
+
+  editHover: {
+    color: "#3b82f6",
+  },
+
+  deleteHover: {
+    color: "#ef4444",
+  },
 
   details: {
     marginTop: "12px",
@@ -220,7 +270,21 @@ const styles = {
     alignItems: "center",
   },
 
-  /* 🔥 CRITICAL */
+  notesWrapper: {
+    marginTop: "12px",
+    paddingTop: "10px",
+  },
+
+  notes: {
+    marginTop: "14px",
+    paddingTop: "10px",
+    borderTop: "1px solid #e5e7eb",
+    fontSize: "13px",
+    color: "#4b4c4cb4",
+    fontStyle: "italic",
+    lineHeight: 1.4,
+  },
+
   statusWrapper: {
     position: "relative",
     zIndex: 20,
@@ -232,6 +296,12 @@ const styles = {
     cursor: "pointer",
     display: "flex",
     gap: "6px",
+    alignItems: "center",
+  },
+
+  externalLink: {
+    color: "#3131338c",
+    display: "flex",
     alignItems: "center",
   },
 
@@ -252,8 +322,6 @@ const styles = {
     cursor: "pointer",
     borderRadius: "8px",
   },
-
-  /* MOBILE SHEET */
 
   sheetOverlay: {
     position: "fixed",
@@ -277,3 +345,4 @@ const styles = {
     cursor: "pointer",
   },
 };
+ 
