@@ -47,12 +47,21 @@
 .job-card-action {
   color: #6B7280;
   cursor: pointer;
-  padding: 8px;
+  width: 32px;
+  height: 32px;
   border-radius: 4px;
   transition: all var(--transition);
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+}
+
+.job-card-action svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
 }
 
 .job-card-action:hover {
