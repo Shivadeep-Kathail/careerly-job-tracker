@@ -38,7 +38,9 @@
 /* ── Actions ──────────────────────────────────────── */
 .job-card-actions {
   display: flex;
-  gap: 6px;
+  gap: 2px;
+  margin-top: -6px;
+  margin-right: -8px;
   opacity: 0;
   transition: opacity var(--transition);
   flex-shrink: 0;
@@ -50,21 +52,19 @@
 }
 
 .job-card-action {
-  color: var(--text-muted);
+  color: #6B7280;
   cursor: pointer;
-  padding: 2px;
-  border-radius: var(--radius-sm);
-  transition: color var(--transition);
-  display: flex;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all var(--transition);
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
 }
 
 .job-card-action:hover {
-  color: var(--text-primary);
-}
-
-.job-card-action--delete:hover {
-  color: var(--danger);
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ── Details ──────────────────────────────────────── */
