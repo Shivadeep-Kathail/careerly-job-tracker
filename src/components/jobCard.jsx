@@ -66,23 +66,27 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
           </div>
 
           <div className={`job-card-actions${isMobile ? " job-card-actions--visible" : ""}`}>
-            <SquarePen
-              size={16}
+            <button
               className="job-card-action"
               onClick={(e) => {
                 e.stopPropagation();
                 onEdit(job);
               }}
-            />
+              aria-label="Edit job"
+            >
+              <SquarePen size={16} />
+            </button>
 
-            <Trash2
-              size={16}
+            <button
               className="job-card-action job-card-action--delete"
               onClick={(e) => {
                 e.stopPropagation();
                 handleDelete();
               }}
-            />
+              aria-label="Delete job"
+            >
+              <Trash2 size={16} />
+            </button>
           </div>
         </div>
 

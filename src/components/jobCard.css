@@ -45,6 +45,8 @@
 }
 
 .job-card-action {
+  background: none;
+  border: none;
   color: #6B7280;
   cursor: pointer;
   width: 32px;
@@ -55,6 +57,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  padding: 0;
 }
 
 .job-card-action svg {
