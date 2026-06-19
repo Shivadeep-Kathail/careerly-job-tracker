@@ -3,7 +3,7 @@ import Column from "./column";
 import JobModal from "./jobModal";
 import NoJobs from "./noJobs";
 import { COLUMNS } from "../data/columns";
-import useIsMobile from "../hooks/useIsMobile";
+import "./board.css";
 
 const Board = ({
   jobs,
@@ -13,9 +13,9 @@ const Board = ({
   isJobModalOpen,
   openModal,
   closeModal,
+  activeFilter,
 }) => {
   const [jobToEdit, setJobToEdit] = useState(null);
-  const isMobile = useIsMobile(850);
 
   const handleEditJob = (job) => {
     setJobToEdit(job);
@@ -33,13 +33,18 @@ const Board = ({
     updateJob({ ...job, status });
   };
 
+  const isFiltered = activeFilter !== "all";
+  const columnsToShow = isFiltered
+    ? COLUMNS.filter((c) => c.id === activeFilter)
+    : COLUMNS;
+
   return (
     <>
       {jobs.length === 0 ? (
         <NoJobs onAddJob={openModal} />
       ) : (
-        <div style={isMobile ? mobileBoard : desktopBoard}>
-          {COLUMNS.map((column) => (
+        <div className={`board${isFiltered ? " board--filtered" : ""}`}>
+          {columnsToShow.map((column) => (
             <Column
               key={column.id}
               column={column}
@@ -64,24 +69,3 @@ const Board = ({
 };
 
 export default Board;
-
-/* ================= STYLES ================= */
-
-const desktopBoard = {
-  display: "grid",
-  gridTemplateColumns: "repeat(5, 270px)",
-  gap: "20px",
-  padding: "24px",
-  justifyContent: "center",
-  alignItems: "flex-start",
-  maxWidth: "100%",
-  boxSizing: "border-box",
-};
-
-
-const mobileBoard = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "16px",
-  padding: "16px",
-};

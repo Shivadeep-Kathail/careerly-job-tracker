@@ -1,85 +1,66 @@
-import { Briefcase } from "lucide-react";
-import Button from "./button";
-import useIsMobile from "../hooks/useIsMobile";
-
 const NoJobs = ({ onAddJob }) => {
-  // Used to control mobile layout (< 850px)
-  const isMobile = useIsMobile(850);
-
   return (
     <div
       style={{
-        ...styles.container,
-        minHeight: isMobile ? "60vh" : "70vh",
-        padding: isMobile ? "0 16px" : "0",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+        padding: "40px 20px",
       }}
     >
       <div
+        onClick={onAddJob}
         style={{
-          ...styles.iconWrap,
-          width: isMobile ? "64px" : "72px",
-          height: isMobile ? "64px" : "72px",
+          border: "1.5px dashed var(--border-hover)",
+          borderRadius: "var(--radius)",
+          padding: "32px 48px",
+          textAlign: "center",
+          cursor: "pointer",
+          transition: "border-color 0.15s ease",
+          maxWidth: "400px",
+          width: "100%",
         }}
+        onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--text-muted)")}
+        onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border-hover)")}
       >
-        <Briefcase size={isMobile ? 28 : 32} strokeWidth={2.2} />
+        <p
+          style={{
+            color: "var(--text-muted)",
+            fontSize: "14px",
+            margin: 0,
+            lineHeight: 1.6,
+          }}
+        >
+          No applications yet —{" "}
+          <span style={{ color: "var(--text-secondary)" }}>
+            press{" "}
+            <kbd
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "20px",
+                minWidth: "20px",
+                padding: "0 5px",
+                fontSize: "11px",
+                fontWeight: 600,
+                fontFamily: "inherit",
+                color: "var(--text-secondary)",
+                background: "var(--bg-elevated)",
+                border: "1px solid var(--border)",
+                borderRadius: "2px",
+                verticalAlign: "middle",
+              }}
+            >
+              N
+            </kbd>{" "}
+            to add one
+          </span>
+        </p>
       </div>
-
-      <h3
-        style={{
-          ...styles.title,
-          fontSize: isMobile ? "18px" : "20px",
-        }}
-      >
-        No applications yet
-      </h3>
-
-      <p
-        style={{
-          ...styles.description,
-          fontSize: isMobile ? "15px" : "17px",
-          lineHeight: isMobile ? 1.4 : 1.2,
-        }}
-      >
-        Start tracking your job applications by adding your first one.
-        Keep all your opportunities organized in one place.
-      </p>
-
-      <Button size={isMobile ? "lg" : "md"} onClick={onAddJob}>
-        Add Your First Job
-      </Button>
     </div>
   );
 };
 
 export default NoJobs;
-
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center",
-    gap: "16px",
-  },
-
-  iconWrap: {
-    borderRadius: "15px",
-    background: "linear-gradient(135deg, #4c4ff0, #9d42f1)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#ffffff",
-    boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-  },
-
-  title: {
-    margin: 0,
-    fontWeight: 500,
-  },
-
-  description: {
-    maxWidth: "420px",
-    color: "#6b7280",
-  },
-};

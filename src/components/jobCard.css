@@ -1,0 +1,231 @@
+/* ── Job Card ─────────────────────────────────────── */
+.job-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+  position: relative;
+}
+
+.job-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+/* ── Header ───────────────────────────────────────── */
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.job-card-role {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.job-card-company {
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ── Actions ──────────────────────────────────────── */
+.job-card-actions {
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity var(--transition);
+  flex-shrink: 0;
+}
+
+.job-card:hover .job-card-actions,
+.job-card-actions--visible {
+  opacity: 1;
+}
+
+.job-card-action {
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.job-card-action:hover {
+  color: var(--text-primary);
+}
+
+.job-card-action--delete:hover {
+  color: var(--danger);
+}
+
+/* ── Details ──────────────────────────────────────── */
+.job-card-details {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.job-card-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.job-card-detail svg {
+  flex-shrink: 0;
+}
+
+/* ── Footer ───────────────────────────────────────── */
+.job-card-footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ── Status badge ─────────────────────────────────── */
+.job-card-status-wrapper {
+  position: relative;
+  z-index: 20;
+}
+
+.job-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: opacity var(--transition);
+}
+
+.job-card-status:hover {
+  opacity: 0.85;
+}
+
+/* ── Dropdown ─────────────────────────────────────── */
+.job-card-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 150px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
+  z-index: 30;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.job-card-dropdown-item {
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+.job-card-dropdown-item:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+/* ── External link ────────────────────────────────── */
+.job-card-link {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  transition: color var(--transition);
+}
+
+.job-card-link:hover {
+  color: var(--accent);
+}
+
+/* ── Notes ────────────────────────────────────────── */
+.job-card-notes {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* ── Mobile bottom sheet ──────────────────────────── */
+.job-card-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-end;
+  z-index: 3000;
+}
+
+.job-card-sheet {
+  width: 100%;
+  background: var(--bg-surface);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.job-card-sheet-option {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  transition: all var(--transition);
+}
+
+.job-card-sheet-option:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.job-card-sheet-option:last-child {
+  border-bottom: none;
+}
+
+/* ── Mobile card overrides ────────────────────────── */
+@media (max-width: 768px) {
+  .job-card {
+    padding: 16px;
+  }
+
+  .job-card-role {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .job-card-company {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .job-card-detail {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .job-card:hover {
+    transform: none;
+  }
+}

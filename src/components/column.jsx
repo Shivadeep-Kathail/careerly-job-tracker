@@ -1,36 +1,26 @@
 import JobCard from "./jobCard";
-import useIsMobile from "../hooks/useIsMobile";
+import "./column.css";
 
 const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
   const Icon = column.icon;
-  const isMobile = useIsMobile(850);
 
   return (
-    <div
-      style={{
-        ...styles.column,
-        width: isMobile ? "100%" : "auto",
-        boxSizing: "border-box",
-      }}
-    >
-      <div style={styles.header}>
-        {Icon && <Icon size={18} color={column.color} />}
-        <span style={styles.title}>{column.title}</span>
+    <div className="column">
+      <div className="column-header">
+        {Icon && <Icon size={15} color={column.color} />}
+        <span className="column-title">{column.title}</span>
 
         <span
-          style={{
-            ...styles.count,
-            background: column.bg,
-            color: column.color,
-          }}
+          className="column-count"
+          style={{ background: column.bg, color: column.color }}
         >
           {jobs.length}
         </span>
       </div>
 
-      <div style={styles.content}>
+      <div className="column-content">
         {jobs.length === 0 ? (
-          <div style={styles.empty}>No jobs here yet</div>
+          <div className="column-empty">No jobs here yet</div>
         ) : (
           jobs.map((job) => (
             <JobCard
@@ -49,53 +39,3 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
 };
 
 export default Column;
-
-const styles = {
-  column: {
-    background: "rgba(255,255,255,0.6)",
-    backdropFilter: "blur(6px)",
-    borderRadius: "16px",
-    padding: "16px",
-    display: "flex",
-    flexDirection: "column",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-    position: "relative",
-    overflow: "visible",
-  },
-
-  header: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-  },
-
-  title: {
-    fontSize: "20px",
-    fontWeight: 500,
-  },
-
-  count: {
-    marginLeft: "6px",
-    padding: "2px 10px",
-    borderRadius: "999px",
-    fontSize: "14px",
-    fontWeight: 600,
-  },
-
-  content: {
-    marginTop: "16px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-    overflow: "visible",
-  },
-
-  empty: {
-    border: "1.5px dashed #d1d5db",
-    borderRadius: "12px",
-    padding: "20px",
-    textAlign: "center",
-    color: "#9ca3af",
-    fontSize: "14px",
-  },
-};

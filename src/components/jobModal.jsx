@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 import Modal from "./modal";
 import Button from "./button";
 import Input from "./input";
+import "./jobModal.css";
 
 const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
   const [role, setRole] = useState("");
@@ -35,8 +37,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
     }
   }, [jobToEdit, isOpen]);
 
-  const isFormValid =
-    role.trim() && company.trim() && location.trim();
+  const isFormValid = role.trim() && company.trim() && location.trim();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,16 +64,18 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       {/* Header */}
-      <div style={headerStyle}>
-        <h2 style={titleStyle}>
-          {jobToEdit ? "Edit Job Application" : "Add Job Application"}
+      <div className="job-modal-header">
+        <h2 className="job-modal-title">
+          {jobToEdit ? "Edit Application" : "New Application"}
         </h2>
-        <button onClick={onClose} style={closeBtn}>✕</button>
+        <button onClick={onClose} className="job-modal-close">
+          <X size={18} />
+        </button>
       </div>
 
-      {/* BODY (scroll + padding live here) */}
-      <div style={bodyStyle}>
-        <form onSubmit={handleSubmit} style={formStyle}>
+      {/* Body */}
+      <div className="job-modal-body">
+        <form onSubmit={handleSubmit} className="job-modal-form">
           <Input
             label="Job Title"
             required
@@ -82,7 +85,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
           />
 
           <Input
-            label="Company Name"
+            label="Company"
             required
             value={company}
             onChange={setCompany}
@@ -98,7 +101,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
           />
 
           <Input
-            label="Application Link"
+            label="Link"
             type="url"
             value={link}
             onChange={setLink}
@@ -107,13 +110,11 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
 
           {/* Date + Status */}
           <div
-            style={{
-              ...rowStyle,
-              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-            }}
+            className="job-modal-row"
+            style={{ gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr" }}
           >
             <Input
-              label="Application Date"
+              label="Date"
               type="date"
               value={date}
               onChange={setDate}
@@ -138,17 +139,17 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
             as="textarea"
             value={notes}
             onChange={setNotes}
-            placeholder="Add any additional notes or reminders..."
+            placeholder="Any additional notes..."
           />
 
           {/* Footer */}
-          <div style={footerStyle}>
+          <div className="job-modal-footer">
             <Button variant="secondary" onClick={onClose} style={{ flex: 1 }}>
               Cancel
             </Button>
 
             <Button type="submit" disabled={!isFormValid} style={{ flex: 1 }}>
-              {jobToEdit ? "Save Changes" : "Add Job"}
+              {jobToEdit ? "Save" : "Add"}
             </Button>
           </div>
         </form>
@@ -158,54 +159,3 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
 };
 
 export default JobModal;
-
-/* ================= STYLES ================= */
-
-const headerStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: "18px 24px",
-  background: "linear-gradient(90deg, #f7faff 0%, #fff5ff 100%)",
-  borderBottom: "1px solid #e5e7eb",
-};
-
-const titleStyle = {
-  fontSize: "22px",
-  fontWeight: 600,
-  margin: 0,
-};
-
-const closeBtn = {
-  border: "none",
-  background: "transparent",
-  fontSize: "22px",
-  cursor: "pointer",
-  color: "#6b7280",
-};
-
-/* 🔥 THIS FIXES BOTH ISSUES */
-const bodyStyle = {
-  padding: "20px",
-  maxHeight: "90vh",
-  overflowY: "auto",
-  boxSizing: "border-box",
-};
-
-const formStyle = {
-  display: "flex",
-  flexDirection: "column",
-};
-
-const rowStyle = {
-  display: "grid",
-  gap: "16px",
-  marginBottom: "8px",
-};
-
-const footerStyle = {
-  display: "flex",
-  gap: "12px",
-  paddingTop: "20px",
-  borderTop: "1px solid #e5e7eb",
-};

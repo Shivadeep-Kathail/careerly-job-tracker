@@ -1,0 +1,58 @@
+/* ── Job Modal ────────────────────────────────────── */
+.job-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.job-modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.job-modal-close {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.job-modal-close:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+}
+
+.job-modal-body {
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.job-modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-modal-row {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.job-modal-footer {
+  display: flex;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}

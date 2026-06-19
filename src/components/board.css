@@ -1,0 +1,57 @@
+/* ── Board ────────────────────────────────────────── */
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  padding: 16px 8px;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Divider between columns in Kanban view on desktop */
+@media (min-width: 769px) {
+  .board:not(.board--filtered) .column:not(:last-child) {
+    border-right: 1px solid #222222;
+  }
+}
+
+/* When filtered to a single status, show a single-column list */
+.board--filtered {
+  grid-template-columns: 1fr;
+}
+
+/* Responsive grid for card layout in filtered list view */
+.board--filtered .column-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  width: 100%;
+  align-items: start;
+}
+
+.board--filtered .column-empty {
+  max-width: 420px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .board {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    width: 100%;
+    overflow-y: auto;
+    height: auto;
+    flex: 1;
+  }
+
+  .board--filtered {
+    max-width: none;
+  }
+}
