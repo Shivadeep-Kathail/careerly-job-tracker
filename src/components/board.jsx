@@ -52,6 +52,7 @@ const Board = ({
               onEditJob={handleEditJob}
               onDeleteJob={deleteJob}
               updateJobStatus={updateJobStatus}
+              onUpdateJob={updateJob}
             />
           ))}
         </div>

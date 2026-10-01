@@ -1,0 +1,207 @@
+/* ── Match colors ─────────────────────────────────── */
+:root {
+  --match-green: #22C55E;
+  --match-amber: #F59E0B;
+  --match-red: #EF4444;
+  --match-green-subtle: rgba(34, 197, 94, 0.10);
+  --match-amber-subtle: rgba(245, 158, 11, 0.10);
+}
+
+/* ── Header ──────────────────────────────────────── */
+.match-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.match-modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.match-modal-close {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.match-modal-close:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+}
+
+/* ── Body ────────────────────────────────────────── */
+.match-modal-body {
+  padding: 24px 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* ── Loading state ───────────────────────────────── */
+.match-modal-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+@keyframes match-loading-spin {
+  to { transform: rotate(360deg); }
+}
+
+.match-loading-ring {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: match-loading-spin 0.8s linear infinite;
+}
+
+/* ── Score ring ───────────────────────────────────── */
+.match-score-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.match-ring-wrapper {
+  position: relative;
+  width: 128px;
+  height: 128px;
+}
+
+.match-ring-svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes match-ring-draw {
+  from {
+    stroke-dashoffset: 339.292;
+  }
+}
+
+.match-ring-arc {
+  animation: match-ring-draw 1s ease-out forwards;
+  transition: stroke 0.3s ease;
+}
+
+.match-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-ring-score {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.match-ring-percent {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.match-score-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Lists ────────────────────────────────────────── */
+.match-list-section {
+  margin-bottom: 20px;
+}
+
+.match-list-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.match-list-heading--green {
+  color: var(--match-green);
+}
+
+.match-list-heading--amber {
+  color: var(--match-amber);
+}
+
+.match-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.match-list li {
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.match-list--green li {
+  background: var(--match-green-subtle);
+  border-left: 3px solid var(--match-green);
+}
+
+.match-list--amber li {
+  background: var(--match-amber-subtle);
+  border-left: 3px solid var(--match-amber);
+}
+
+/* ── Re-check button ─────────────────────────────── */
+.match-recheck-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-top: 4px;
+}
+
+.match-recheck-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}

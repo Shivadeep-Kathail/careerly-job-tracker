@@ -13,6 +13,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [status, setStatus] = useState("wishlist");
   const [notes, setNotes] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (!isOpen) return;
@@ -26,6 +27,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
       setDate(jobToEdit.appliedDate);
       setStatus(jobToEdit.status);
       setNotes(jobToEdit.notes || "");
+      setDescription(jobToEdit.description || "");
     } else {
       setRole("");
       setCompany("");
@@ -34,6 +36,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
       setDate(new Date().toISOString().split("T")[0]);
       setStatus("wishlist");
       setNotes("");
+      setDescription("");
     }
   }, [jobToEdit, isOpen]);
 
@@ -50,6 +53,7 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
       appliedDate: date,
       status,
       notes,
+      description,
     };
 
     jobToEdit
@@ -140,6 +144,15 @@ const JobModal = ({ isOpen, onClose, addJob, updateJob, jobToEdit }) => {
             value={notes}
             onChange={setNotes}
             placeholder="Any additional notes..."
+          />
+
+          <Input
+            label="Job Description"
+            as="textarea"
+            value={description}
+            onChange={setDescription}
+            placeholder="Paste the job description here for resume matching…"
+            tall
           />
 
           {/* Footer */}

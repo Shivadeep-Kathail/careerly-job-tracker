@@ -1,0 +1,147 @@
+/* ── Resume Upload ────────────────────────────────── */
+.resume-upload {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.resume-upload-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+/* ── Drop zone / upload button ───────────────────── */
+.resume-upload-dropzone {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px dashed var(--border-hover);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.resume-upload-dropzone:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+/* ── Uploaded info ───────────────────────────────── */
+.resume-upload-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resume-upload-file {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.resume-upload-file svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--accent);
+}
+
+.resume-upload-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.resume-upload-filename {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resume-upload-date {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Action buttons ──────────────────────────────── */
+.resume-upload-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.resume-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.resume-upload-btn--replace {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+
+.resume-upload-btn--replace:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+/* ── Loading ─────────────────────────────────────── */
+.resume-upload-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+@keyframes resume-spin {
+  to { transform: rotate(360deg); }
+}
+
+.resume-spinner {
+  animation: resume-spin 1s linear infinite;
+}
+
+/* ── Error ────────────────────────────────────────── */
+.resume-upload-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--danger-subtle);
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--danger);
+}
+
+.resume-upload-error svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}

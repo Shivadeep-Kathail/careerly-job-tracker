@@ -13,6 +13,36 @@
   transform: translateY(-1px);
 }
 
+/* ── Match score badge (top-right corner) ────────── */
+.job-card-match-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  line-height: 1.4;
+  z-index: 10;
+  pointer-events: none;
+  border: 2px solid var(--bg-primary);
+}
+
+.job-card-match-badge--green {
+  background: rgba(34, 197, 94, 0.18);
+  color: #22C55E;
+}
+
+.job-card-match-badge--amber {
+  background: rgba(245, 158, 11, 0.18);
+  color: #F59E0B;
+}
+
+.job-card-match-badge--red {
+  background: rgba(239, 68, 68, 0.18);
+  color: #EF4444;
+}
+
 /* ── Header ───────────────────────────────────────── */
 .job-card-header {
   display: flex;
@@ -98,6 +128,52 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.job-card-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Check Match button ──────────────────────────── */
+.job-card-match-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+  font-family: inherit;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.job-card-match-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.job-card-match-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.job-card-match-btn--done {
+  border-color: transparent;
+  color: var(--text-secondary);
+}
+
+.job-card-match-btn--done:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--border);
+  color: var(--text-primary);
 }
 
 /* ── Status badge ─────────────────────────────────── */
@@ -234,3 +310,4 @@
     transform: none;
   }
 }
+

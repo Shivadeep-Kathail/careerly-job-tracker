@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { LayoutGrid } from "lucide-react";
 import { COLUMNS } from "../data/columns";
+import ResumeUpload from "./resumeUpload";
 import "./sidebar.css";
 
 const Sidebar = ({ jobs, activeFilter, onFilterChange, isOpen, onClose }) => {
@@ -70,6 +71,9 @@ const Sidebar = ({ jobs, activeFilter, onFilterChange, isOpen, onClose }) => {
           })}
         </nav>
 
+        {/* Resume */}
+        <ResumeUpload />
+
         {/* Stats */}
         {totalJobs > 0 && (
           <div className="sidebar-stats">
@@ -93,3 +97,4 @@ const Sidebar = ({ jobs, activeFilter, onFilterChange, isOpen, onClose }) => {
 };
 
 export default Sidebar;
+

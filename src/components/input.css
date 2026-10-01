@@ -44,3 +44,7 @@
   height: 75px;
   resize: none;
 }
+
+.input-field--tall {
+  height: 120px;
+}

@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { formatAppliedDate } from "../utilities/date";
+import { loadResumeText } from "../utilities/storage";
+import { checkMatch } from "../utilities/geminiApi";
 import useIsMobile from "../hooks/useIsMobile";
+import MatchModal from "./matchModal";
 import {
   Trash2,
   SquarePen,
@@ -9,6 +12,7 @@ import {
   MapPin,
   ExternalLink,
   ChevronDown,
+  ScanSearch,
 } from "lucide-react";
 import "./jobCard.css";
 
@@ -20,14 +24,25 @@ const STATUS_OPTIONS = [
   { key: "rejected", label: "Rejected" },
 ];
 
-const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
+const getMatchBadgeClass = (score) => {
+  if (score >= 75) return "job-card-match-badge--green";
+  if (score >= 50) return "job-card-match-badge--amber";
+  return "job-card-match-badge--red";
+};
+
+const JobCard = ({ job, column, onEdit, onDelete, onStatusChange, onUpdateJob }) => {
   const [desktopOpen, setDesktopOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [matchModalOpen, setMatchModalOpen] = useState(false);
+  const [matchLoading, setMatchLoading] = useState(false);
 
   const isMobile = useIsMobile(850);
   const dropdownRef = useRef(null);
 
   const hasNotes = Boolean(job.notes?.trim());
+  const hasDescription = Boolean(job.description?.trim());
+  const hasResume = Boolean(loadResumeText());
+  const hasCachedMatch = typeof job.matchScore === "number";
 
   const currentStatusLabel =
     STATUS_OPTIONS.find((s) => s.key === job.status)?.label || job.status;
@@ -55,9 +70,73 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
     }
   };
 
+  const runMatchCheck = async () => {
+    const resumeText = loadResumeText();
+    if (!resumeText || !hasDescription) return;
+
+    setMatchLoading(true);
+    setMatchModalOpen(true);
+
+    try {
+      const result = await checkMatch(resumeText, job.description);
+      // Cache result on job object
+      onUpdateJob({
+        ...job,
+        matchScore: result.matchScore,
+        strengths: result.strengths,
+        gaps: result.gaps,
+      });
+    } catch (err) {
+      console.error("Match check failed:", err);
+      alert(err.message || "Failed to check match. Please try again.");
+      setMatchModalOpen(false);
+    } finally {
+      setMatchLoading(false);
+    }
+  };
+
+  const handleCheckMatch = (e) => {
+    e.stopPropagation();
+
+    if (hasCachedMatch) {
+      // Show cached results
+      setMatchModalOpen(true);
+      return;
+    }
+
+    runMatchCheck();
+  };
+
+  const handleRecheck = () => {
+    runMatchCheck();
+  };
+
+  // Determine tooltip for disabled state
+  const matchTooltip = !hasResume
+    ? "Upload your resume first"
+    : !hasDescription
+    ? "Add a job description first"
+    : hasCachedMatch
+    ? `Match: ${job.matchScore}% — click to view`
+    : "Check resume match";
+
+  const matchData = hasCachedMatch
+    ? { matchScore: job.matchScore, strengths: job.strengths, gaps: job.gaps }
+    : null;
+
   return (
     <>
       <div className="job-card">
+        {/* Match score badge */}
+        {hasCachedMatch && (
+          <div
+            className={`job-card-match-badge ${getMatchBadgeClass(job.matchScore)}`}
+            title={`Match: ${job.matchScore}%`}
+          >
+            {job.matchScore}%
+          </div>
+        )}
+
         {/* Header */}
         <div className="job-card-header">
           <div>
@@ -134,16 +213,30 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
             )}
           </div>
 
-          {job.link && (
-            <a
-              href={job.link}
-              target="_blank"
-              rel="noreferrer"
-              className="job-card-link"
+          <div className="job-card-footer-right">
+            {/* Check Match button */}
+            <button
+              className={`job-card-match-btn${hasCachedMatch ? " job-card-match-btn--done" : ""}`}
+              onClick={handleCheckMatch}
+              disabled={!hasResume || !hasDescription}
+              title={matchTooltip}
+              aria-label={matchTooltip}
             >
-              <ExternalLink size={14} />
-            </a>
-          )}
+              <ScanSearch size={13} />
+              {hasCachedMatch ? `${job.matchScore}%` : "Match"}
+            </button>
+
+            {job.link && (
+              <a
+                href={job.link}
+                target="_blank"
+                rel="noreferrer"
+                className="job-card-link"
+              >
+                <ExternalLink size={14} />
+              </a>
+            )}
+          </div>
         </div>
 
         {/* Notes */}
@@ -181,6 +274,15 @@ const JobCard = ({ job, column, onEdit, onDelete, onStatusChange }) => {
           </div>,
           document.body
         )}
+
+      {/* Match modal */}
+      <MatchModal
+        isOpen={matchModalOpen}
+        onClose={() => setMatchModalOpen(false)}
+        matchData={matchData}
+        onRecheck={handleRecheck}
+        isLoading={matchLoading}
+      />
     </>
   );
 };

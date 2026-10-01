@@ -1,7 +1,7 @@
 import JobCard from "./jobCard";
 import "./column.css";
 
-const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
+const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus, onUpdateJob }) => {
   const Icon = column.icon;
 
   return (
@@ -30,6 +30,7 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
               onEdit={onEditJob}
               onDelete={onDeleteJob}
               onStatusChange={updateJobStatus}
+              onUpdateJob={onUpdateJob}
             />
           ))
         )}
@@ -39,3 +40,4 @@ const Column = ({ column, jobs, onEditJob, onDeleteJob, updateJobStatus }) => {
 };
 
 export default Column;
+

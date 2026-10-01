@@ -8,9 +8,10 @@ const Input = ({
   type = "text",
   required = false,
   as = "input",
+  tall = false,
   children,
 }) => {
-  const fieldClass = `input-field${as === "textarea" ? " input-field--textarea" : ""}`;
+  const fieldClass = `input-field${as === "textarea" ? " input-field--textarea" : ""}${tall ? " input-field--tall" : ""}`;
 
   return (
     <div className="input-wrapper">
@@ -27,7 +28,6 @@ const Input = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
-          maxLength={50}
           className={fieldClass}
         />
       ) : as === "select" ? (
@@ -53,3 +53,4 @@ const Input = ({
 };
 
 export default Input;
+
